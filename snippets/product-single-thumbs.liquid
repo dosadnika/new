@@ -1,0 +1,30 @@
+{%- if section.settings.enable_small_images or section.settings.show_media_btn -%}
+{%- assign small_image_size = '100x' -%}
+{%- if thumbs_layout == 'grid' -%}
+	{%- assign use_slider = false -%}
+{%- else -%}
+	{%- assign use_slider = true -%}
+	{%- assign ov_slider = 5 -%}
+	{%- if thumbs_layout == 'hoz_slider' and product.media.size <= ov_slider -%}
+		{%- assign use_padding_wrap = true -%}
+	{%- endif -%}
+{%- endif -%}
+<div class="w100 flex flex-wrap flex-align-space-between flex-align-ver product-single__thumbs-wrap">
+	{%- if use_slider -%}
+	<button aria-label="button" class="slick-prev button button--style3 slick-arrow--single-thumbs slick-arrow{% if thumbs_layout == 'ver_slider' %} slick-arrow--single-thumbs-vertical{% endif %}" style="margin-top:10px;width: 20px;position: relative;border:none;background:none;padding:0;"><span></span></button>
+	{%- endif -%}
+	<div class="pg__thumbs pg__thumbs--single grid pg__thumbs--large {% if use_slider %}pg__thumbs--slider re-calc-index{% if thumbs_layout == 'ver_slider' %} pg__thumbs--slider-vertical{% endif %}{% endif %}{% if section.settings.enable_small_images == false %} hide{% endif %}"{% if use_slider and thumbs_layout == 'hoz_slider' and product.media.size > ov_slider %} style="width: calc(100% - 40px);"{% endif %}>{%- comment -%}add class pg__thumbs--slider to display thumbs as slider{%- endcomment -%}
+		{%- include 'product-single-thumb' with media: featured_media -%}
+		{%- assign index = 1 -%}
+		{% for media in product.media %}
+			{%- assign index = index | plus: 1 -%}
+			{%- if media != featured_media -%}
+      	{%- include 'product-single-thumb' -%}
+      {%- endif -%}
+    {% endfor %}
+	</div>
+	{%- if use_slider -%}
+	<button aria-label="button" class="slick-next button button--style3 slick-arrow--single-thumbs slick-arrow{% if thumbs_layout == 'ver_slider' %} slick-arrow--single-thumbs-vertical{% endif %}" style="margin-top:10px;width: 20px;position: relative;border:none;background:none;padding:0;"><span></span></button>
+	{%- endif -%}
+</div>
+{%- endif -%}

@@ -1,0 +1,3 @@
+{%- if show_wishlist_btn and settings.enable_wishlist -%}
+<a {% if showTooltip %} data-toggle="tooltip" data-original-title="{{ 'collections.product_item.add_to_wishlist' | t | escape }}" {% if tooltip_pos != blank %} data-placement="{{ tooltip_pos }}" {% else %} data-placement="top" {% endif %}{% endif %} title="{{ 'collections.product_item.add_to_wishlist'|t|escape }}" data-id="{{ product.id }}" href="#" class="button button--wl flex{% if btn_style_classes %} {{ btn_style_classes }}{% endif %}">{% render 'icon-wishlist' %}{%- unless hide_wishlist_text -%}<span class="hidden-xs hidden-sm hidden-md">&nbsp;{{ 'collections.product_item.wishlist'|t }}</span>{%- endunless -%}</a>
+{%- endif -%}

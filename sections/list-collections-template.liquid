@@ -1,0 +1,174 @@
+<div data-section-id="{{ section.id }}" data-section-type="list-collection-template" id="list-collection-template">
+  <div class="container{% render 'wide-css-class' %}">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="page-content">
+          {% case section.settings.grid %}
+            {% when 2 %}
+              {%- assign grid_item_width = 'col-sm-6' -%}
+            {% when 3 %}
+              {%- assign grid_item_width = 'col-sm-4' -%}
+            {% when 4 %}
+              {%- assign grid_item_width = 'col-sm-3' -%}
+            {% when 5 %}
+              {%- assign grid_item_width = 'col-sm-20' -%}
+            {% when 6 %}
+              {%- assign grid_item_width = 'col-sm-2' -%}  
+          {% endcase %}
+
+          <div class="row">
+            {% if section.settings.display_type == 'all' %}
+              {% case section.settings.sort %}
+                {% when 'products_high' or 'products_low' %}
+                  {%- assign collections = collections | sort: 'all_products_count' -%}
+                {% when 'date' or 'date_reversed' %}
+                  {%- assign collections = collections | sort: 'published_at' -%}
+              {% endcase %}
+
+              {%- assign grid_item_width_small = 'col-xs-12' -%}
+              {% if section.settings.sort == 'products_low' or section.settings.sort == 'date' or section.settings.sort == 'alphabetical' %}
+                {% for collection in collections %}
+                  <div class="grid__item {{ grid_item_width_small }} {{ grid_item_width }}">
+                    {% render 'collection-grid-item' with collection: collection, collection_bkg_title: section.settings.bkg_title, collection_color_title: section.settings.color_title %}
+                  </div>
+                {% endfor %}
+              {% else %}
+                {% for collection in collections reversed %}
+                  <div class="grid__item {{ grid_item_width_small }} {{ grid_item_width }}">
+                    {% render 'collection-grid-item' with collection: collection, collection_bkg_title: section.settings.bkg_title, collection_color_title: section.settings.color_title %}
+                  </div>
+                {% endfor %}
+              {% endif %}
+              {%- if collections == blank or collections.size == 0 -%}
+                {% render 'no-blocks' %}
+              {%- endif -%}
+            {% else %}
+              {%- if section.blocks.size > 0 -%}
+                {% if section.blocks.size > 1 %}
+                  {%- assign grid_item_width_small = 'col-xs-6' -%}
+                {% else %}
+                  {%- assign grid_item_width_small = 'col-xs-12' -%}
+                {% endif %}
+                {% for block in section.blocks %}
+                  <div class="grid__item {{ grid_item_width_small }} {{ grid_item_width }}">
+                    {%- assign collection = collections[block.settings.collection] -%}
+                    {% render 'collection-grid-item' with collection: collection, collection_bkg_title: section.settings.bkg_title, collection_color_title: section.settings.color_title, custom_image: block.settings.custom_image, custom_title: block.settings.custom_title %}
+                  </div>
+                {% endfor %}
+              {%- else -%}
+                {% render 'no-blocks' %}  
+              {%- endif -%}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Collections list page",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "All of your collections are listed by default. To customize your list, choose 'Selected' and add collections."
+      },
+      {
+        "type": "radio",
+        "id": "display_type",
+        "label": "Select collections to show",
+        "default": "all",
+        "options": [
+          {
+            "value": "all",
+            "label": "All"
+          },
+          {
+            "value": "selected",
+            "label": "Selected"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "sort",
+        "label": "Sort collections by:",
+        "info": "Sorting only applies when 'All' is selected",
+        "default": "alphabetical",
+        "options": [
+          {
+            "value": "products_high",
+            "label": "Product count, high to low"
+          },
+          {
+            "value": "products_low",
+            "label": "Product count, low to high"
+          },
+          {
+            "value": "alphabetical",
+            "label": "Alphabetically, A-Z"
+          },
+          {
+            "value": "alphabetical_reversed",
+            "label": "Alphabetically, Z-A"
+          },
+          {
+            "value": "date",
+            "label": "Date, old to new"
+          },
+          {
+            "value": "date_reversed",
+            "label": "Date, new to old"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "grid",
+        "label": "Collections per row",
+        "min": 2,
+        "max": 6,
+        "step": 1,
+        "default": 3
+      },
+      {
+        "type": "color",
+        "id": "bkg_title",
+        "label": "Title background",
+        "default": "#000"
+      },
+      {
+        "type": "color",
+        "id": "color_title",
+        "label": "Title color",
+        "default": "#fff"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "collection",
+        "name": "Collection",
+        "settings": [
+          {
+            "label": "Collection",
+            "id": "collection",
+            "type": "collection"
+          },
+          {
+            "type": "image_picker",
+            "id": "custom_image",
+            "label": "Custom image",
+            "info": "Leave empty to show the collection image or first product image in the collection."
+          },
+          {
+            "type": "text",
+            "id": "custom_title",
+            "label": "Custom title",
+            "info": "Leave empty to show the collection title."
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,43 @@
+{%- if custom_image != blank -%}
+  {%- assign collection_image = custom_image -%}
+{%- elsif collection.image -%}
+  {%- assign collection_image = collection.image -%}
+{%- elsif collection.products.first and collection.products.first.images != empty -%}
+  {%- assign collection_image = collection.products.first.featured_image -%}
+{%- else -%}
+  {%- assign collection_image = blank -%}
+{%- endif -%}
+{%- if custom_title != blank %}
+  {%- assign collection_title = custom_title -%}
+{% elsif collection.title != blank %}
+  {%- assign collection_title = collection.title -%}
+{%- else -%}
+  {%- assign collection_title = 'homepage.onboarding.collection_title' | t -%}  
+{% endif %}
+
+<div class="collection-grid-item por w100">
+  <a href="{% if collection.products == empty %}#{% else %}{{ collection.url }}{% endif %}" class="collection-grid-item__link">
+    {% unless collection_image == blank %}
+      <div class="collection-grid-item__overlay box ratio-container lazyload js op1 ignore-effect por db w100 h100"
+         data-bgset="{% render 'bgset' with collection_image as image %}"
+         data-sizes="auto"
+         data-parent-fit="cover" data-expand="-50" style="background-image: url('{{ collection_image | img_url: '100x' }}')">
+      </div>
+   {% else %}
+     {% if collection == empty %}
+        <div class="collection-grid-item__overlay por db w100 h100">
+          {% capture current %}{% cycle 1, 2, 3 %}{% endcapture %}
+          {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+        </div>
+      {% else %}
+         <div class="collection-grid-item__overlay por db w100 h100" style="background-image: url('{{ collection_image | img_url: '1024x1024' }}')"></div>
+      {% endif %}
+   {% endunless %}
+    <div class="collection-grid-item__title-wrapper w100"{% if collection_bkg_title != blank %} style="background:{{ collection_bkg_title | color_modify: 'alpha', 0.7 }};"{% endif %}>
+      <h3 class="collection-grid-item__title secondary-font transition margin0"{% if collection_color_title != blank or collection_fs_title != blank %} style="{% if collection_color_title != blank %}color:{{ collection_color_title }};{% endif %}{% if collection_fs_title != blank %}font-size: {{ collection_fs_title }}px;{% endif %}"{% endif %}>
+        {{ collection_title | raw }}
+      </h3>
+      <span class="collection-grid-item__products_count"{% if collection_color_count != blank %} style="color:{{ collection_color_count }};"{% endif %}>{{ 'collections.general.items_with_count' | t: count: collection.all_products_count }}</span>
+    </div>
+  </a>
+</div>

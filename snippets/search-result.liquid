@@ -1,0 +1,86 @@
+<div class="container{% render 'wide-css-class' %}">
+  <div class="row">
+    <div class="col-xs-12">
+      <h1 class="page-title text-center big-gutter-bottom">
+        {%- if search.performed -%}
+          {%- if search.types.size == 1 and search.types contains 'product' and section.settings.enable_auto_filter -%}
+            {{ 'general.search.results_no_count' | t: terms: search.terms }}
+          {%- else -%}
+            {{ 'general.search.results_with_count' | t: count: search.results_count, terms: search.terms }}
+          {%- endif -%}
+        {%- else -%}
+          {{ 'general.search.title' | t }}  
+        {%- endif -%}
+      </h1>
+      <div class="page-content w100">
+        <div class="search__form center-block col-xs-12 col-sm-8 no-gutter" style="float:none;">
+          <form action="{{ routes.search_url }}" method="get" role="search" class="search">
+            <div class="row flex flex-wrap">
+              <div class="col-xs-12 col-sm-6">
+                <input type="search"
+                  id="SearchInput"
+                  name="q"
+                  value="{{ search.terms | escape }}"
+                  placeholder="{{ 'general.search.placeholder' | t }}"
+                  aria-label="{{ 'general.search.placeholder' | t }}"
+                  autofocus class="w100 h100 search__input" style="text-indent: 10px;box-sizing: border-box;height:100%;min-height:45px;padding: 0 15px;">
+                <input type="hidden" name="options[prefix]" value="last" aria-hidden="true" />    
+              </div>
+              <div class="col-xs-6 col-sm-3 gutter-ele-top-mb">
+                <div class="w100 h100 select select--search-wrap">
+                  <select name="type" class="w100 h100 select__search-page" style="background: none;">
+                    <option value="product"{% if search.types contains 'product' and search.types.size == 1 %}{% if search.types contains 'product' %} selected="selected"{% endif %}{% endif %}>{{ 'general.search.product' | t }}</option>
+                    <option value="article"{% if search.types contains 'article' and search.types.size == 1 %}{% if search.types contains 'article' %} selected="selected"{% endif %}{% endif %}>{{ 'general.search.article' | t }}</option>
+                    <option value="page"{% if search.types contains 'page' and search.types.size == 1 %}{% if search.types contains 'page' %} selected="selected"{% endif %}{% endif %}>{{ 'general.search.page' | t }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-xs-6 col-sm-3 gutter-ele-top-mb">
+                <button class="button button--style1 w100 flex h100 search__button" type="submit" style="width:auto;"><span class="ver-sub">{{ 'general.search.submit' | t }}</span></button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="search__result search__items big-gutter-top collection__content">
+          {% if search.performed %}
+            {% if search.results_count == 0 %}
+              <p class="alert alert-success">{{ 'general.search.no_results_html' | t: terms: search.terms, link: routes.root_url }}</p>
+            {% else %}
+              {%- if search.types.size == 1 -%}
+                {%- if search.types contains 'product' -%}
+                  {%- if section.settings.enable_auto_filter -%}
+                  {%- liquid 
+                    unless settings.enable_rtl and settings.rtl_language_codes contains request.locale.iso_code
+                      assign enable_rtl = false
+                      assign left_holder = 'left'
+                      assign right_holder = 'right'
+                    else
+                      assign enable_rtl = true
+                      assign left_holder = 'right'
+                      assign right_holder = 'left'
+                    endunless
+                  -%}
+                  <div class="row">
+                    {%- assign page_limit = search.results_count | at_most: 1000 -%}
+                    {% paginate search.results by page_limit %}
+                    {%- include 'collection-products-filter' with products: search.results, layout_name: 'left_sidebar' with full_url: full_url, enable_sidebar: true, enable_rtl: enable_rtl, left_holder: left_holder, right_holder: right_holder -%}
+                    {% endpaginate %}
+                  </div>
+                  {%- else -%}
+                    {%- render 'search-result-product' -%}
+                  {%- endif -%}
+                {%- elsif search.types contains 'article' -%}
+                  {%- render 'search-result-article' -%}
+                {%- else -%}
+                  {%- render 'search-result-page' -%}    
+                {%- endif -%}
+              {%- else -%}
+                {%- render 'search-result-combine' -%}  
+              {%- endif -%}
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,6 @@
+{%- if section.settings.bkg_enable -%}
+{%- if section.settings.top_gutter or section.settings.bottom_gutter -%}
+<div class="db{% render 'section-gutters', top_gutter: section.settings.top_gutter, bottom_gutter: section.settings.bottom_gutter %}{% if section.settings.hidden_mobile %} hidden-xs{% endif %}">
+{%- endif -%}
+<div class="db big-gutter-top big-gutter-bottom{% if section.settings.hidden_mobile %} hidden-xs{% endif %}" style="background-color:{{ section.settings.section_bkg }};">
+{%- endif -%}

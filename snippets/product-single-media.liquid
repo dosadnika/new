@@ -1,0 +1,30 @@
+<div class="product-single__photos por">
+	{%- assign youtubeCapture = '' -%}
+  {%- assign vimeoCapture = '' -%}
+  {%- if thumbs_layout == 'ver_slider' -%}
+		<div class="row product-single__photos__row">
+			<div class="col-xs-12 col-md-10 {% unless enable_rtl %}f-right{% else %}f-left{% endunless %} no-gutter-left-mb no-gutter-right-mb">
+				<div class="por">
+					{%- include 'product-single-mains' with use_slider: true -%}
+					{%- include 'product-single-media-btn' with show_media_btn: section.settings.show_media_btn, btn_style_classes: 'button--media-single button--style2', hide_media_text: true -%}
+					{%- if section.settings.show_label -%}
+						{%- include 'product-single-label' with use_padding_left_right: true -%}
+					{%- endif -%}
+				</div>
+			</div>	
+			<div class="col-xs-12 col-md-2 pg__thumbs-wap--single-ver-slider">
+				{%- include 'product-single-thumbs' -%}		
+			</div>	
+		</div>
+	{%- else -%}
+		<div class="por">
+		  {%- include 'product-single-mains' with use_slider: true -%}
+		  {%- include 'product-single-media-btn' with show_media_btn: section.settings.show_media_btn, btn_style_classes: 'button--media-single button--style2', hide_media_text: true -%}
+		  {%- if section.settings.show_label -%}
+				{%- include 'product-single-label' -%}
+			{%- endif -%}
+		</div>
+	  <div class="clearfix"></div>
+	  {%- include 'product-single-thumbs' -%}
+  {%- endif -%}
+</div>

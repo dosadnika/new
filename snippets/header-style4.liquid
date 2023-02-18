@@ -1,0 +1,92 @@
+{%- if shop.customer_accounts_enabled or settings.enable_compare -%}
+	<div class="header__links header__links--bkg{% if settings.use_sticky %} hide-in-sticky{% endif %}">
+		<div class="container{% if settings.header_wide_display %}-fluid{% endif %}">
+			<div class="row">
+				<div class="col-xs-12">
+					{%- if shop.customer_accounts_enabled or settings.enable_compare -%}
+					<div class="header__links__left f-left">
+						{%- if settings.enable_compare -%}
+							<a href="#" class="header__link header__link--top header__link--compare dib{% if enable_rtl %} header__link--reverse{% endif %}" title="{{ 'collections.product_item.compare' | t | escape }}">
+								{%- render 'icon-compare' -%}
+								{{ 'collections.product_item.compare' | t }}
+							</a>
+						{%- endif -%}
+						{%- if settings.enable_wishlist -%}
+							<a href="javascript:void(0);" class="header__link header__link--top header__link--wishlist dib{% if enable_rtl %} header__link--reverse{% endif %}" title="{{ 'general.accessibility.your_wishlist' | t | escape }}">
+								{%- render 'icon-wishlist' -%}
+								{{ 'general.accessibility.your_wishlist_html' | t }}
+							</a>
+						{%- endif -%}
+						{%- if shop.customer_accounts_enabled -%}
+							{%- if customer -%}
+								<a href="{{ routes.account_url }}" class="header__link header__link--top dib{% if enable_rtl %} header__link--reverse{% endif %}" title="{{ 'customer.account.title' | t | escape }}">
+									{%- render 'icon-user-circle' -%}
+									{{ 'customer.account.title' | t }}
+								</a>
+								<a href="{{ routes.account_logout_url }}" class="header__link header__link--top dib{% if enable_rtl %} header__link--reverse{% endif %}" title="{{ 'layout.customer.log_out' | t | escape }}">
+									{%- render 'icon-sign-out' -%}
+									{{ 'layout.customer.log_out' | t }}
+								</a>
+							{%- else -%}	
+								<div class="bt-dropdown dib" data-group="header__links">
+									<a class="bt-dropdown__trigger header__link header__link--top dib{% if enable_rtl %} header__link--reverse{% endif %}" title="{{ 'customer.account.title' | t | escape }}" href="{{ routes.account_login_url }}">
+										{%- render 'icon-sign-in' -%}
+										{{ 'customer.login.title' | t }}
+									</a>
+									<div class="bt-dropdown__content bt-dropdown__content--{% unless enable_rtl %}left{% else %}right{% endunless %}">
+										{%- render 'login-form-header', id: 'customer_login_header', suffix_id_field: 'Header', enable_rtl: enable_rtl, left_holder: left_holder, right_holder: right_holder -%}
+									</div>
+								</div>
+								<a href="{{ routes.account_register_url }}" class="header__link header__link--top dib{% if enable_rtl %} header__link--reverse{% endif %}" title="{{ 'customer.register.title' | t | escape }}">
+									{%- render 'icon-user-circle' -%}
+									{{ 'customer.register.title' | t }}
+								</a>
+							{%- endif -%}
+						{%- endif -%}
+						{%- render 'language-picker', data_group: 'header__links', show_language_icon: true, addition_classes: 'header__link header__link--top', wrap_class: 'dib' -%}
+					</div>
+					{%- endif -%}
+					<div class="header__links__right f-right">
+						{%- if settings.header4_hotline != blank -%}
+							<a class="header__link header__link--top dib{% if enable_rtl %} header__link--reverse{% endif %}" href="#" title="{{ 'general.header.hotline' | t | escape }}">{%- render 'icon-phone' -%}{{ 'general.header.hotline' | t }}: {{ settings.header4_hotline }}</a>
+						{%- endif -%}
+						{%- if settings.header4_tracking_link != blank -%}
+						<a class="header__link header__link--top dib{% if enable_rtl %} header__link--reverse{% endif %}" href="{{ settings.header4_tracking_link }}" title="{{ 'general.header.track_order' | t | escape }}">{%- render 'icon-truck' -%}{{ 'general.header.track_order' | t }}</a>
+						{%- endif -%}
+						{%- if settings.header4_help_link != blank -%}
+							<a class="header__link header__link--top dib{% if enable_rtl %} header__link--reverse{% endif %}" href="{{ settings.header4_help_link }}" title="{{ 'general.header.help' | t | escape }}">{%- render 'icon-support' -%}{{ 'general.header.help' | t }}</a>
+						{%- endif -%}
+					</div>
+				</div>
+			</div>
+		</div>				
+	</div>
+{%- endif -%}
+<div class="container{% if settings.header_wide_display %}-fluid{% endif %}">
+	<div class="row header__wrap flex flex-align-ver">
+		<div class="col-xs-12 gutter-top{% if settings.use_sticky %} hide-in-sticky{% endif %}"></div>
+		<div class="col-xs-3 text-left{% if settings.use_sticky %} hide-in-sticky{% endif %}">{%- render 'search-form' -%}</div>
+		<div class="col-xs-6 text-center{% if settings.use_sticky %} hide-in-sticky{% endif %}">{% render 'header__logo' %}</div>
+		<div class="col-xs-3 text-right{% if settings.use_sticky %} hide-in-sticky{% endif %}">
+			<ul class="list--inline">
+				<li>{%- render 'currency-switcher' -%}</li>
+				<li>{%- render 'header-cart' with cart_dropdown_direction: 'bt-dropdown__content--right', enable_rtl: enable_rtl, left_holder: left_holder, right_holder: right_holder -%}</li>
+			</ul>
+		</div>
+		<div class="col-xs-12 gutter-bottom{% if settings.use_sticky %} hide-in-sticky{% endif %}"></div>
+		<div class="col-xs-12{% if settings.use_sticky %} use-sticky--desktop{% endif %}">
+			<div class="row flex">
+				<div class="col-xs-3 position-static nav-ver-bar-wrap">
+					<div class="nav-ver-bar h100">
+						<a href="#" class="flex flex-align-ver w100 h100 nav-ver-bar__link" title="{{ 'layout.navigation.vertical_bar' | t | escape }}">{%- render 'icon-list' -%}<span>{{ 'layout.navigation.vertical_bar' | t }}</span></a>
+					</div>
+					{%- section 'navigation-vertical' -%}
+				</div>
+				<div class="col-xs-9 position-static flex flex-align-hoz">
+					{% section 'navigation' %}
+					<div class="col-xs-12{% if settings.use_sticky %} show-in-sticky{% endif %} no-gutter" style="padding-top:10px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

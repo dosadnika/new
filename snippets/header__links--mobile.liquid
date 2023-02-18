@@ -1,0 +1,35 @@
+<div class="header__links header__links--flex flex">
+	<div class="bt-dropdown" data-group="header__links__mobile">
+		<a href="#" class="bt-dropdown__trigger header__link" title="{{ 'general.search.placeholder' | t | escape }}">
+			{%- render 'icon-search' with add_class: 'ver-sub' -%}
+		</a>
+		<div class="bt-dropdown__content w100">
+			{%- render 'search-form', is_search_mobile: true, search_form_abs: true -%}
+		</div>
+	</div>
+{%- unless template.name == 'cart' -%}
+	{%- assign header_cart_layout_mobile = settings.header_cart_layout_mobile -%}
+{%- else -%}
+	{%- assign header_cart_layout_mobile = 'only_link' -%}
+{%- endunless -%}	
+	{%- if header_cart_layout_mobile != 'no_display' -%}
+		{%- capture header_cart_link_html -%}
+		<a href="{% if header_cart_layout_mobile == 'only_link' %}{{ routes.cart_url }}{% else %}#{% endif %}" class="por{% if header_cart_layout_mobile != 'only_link' %} header__cart-trigger-mobile{% endif %}{% if header_cart_layout_mobile == 'dropdown' %} bt-dropdown__trigger w100 dib{% elsif header_cart_layout_mobile == 'sidebar' %} bt-sidebar-btn{% endif %} header__link {% unless enable_rtl %}no-gutter--right{% else %}no-gutter--left{% endunless %}"{% if header_cart_layout_mobile == 'sidebar' %} data-target="#bt-sidebar-cart" data-placement="{% unless enable_rtl %}right{% else %}left{% endunless %}"{% endif %} title="{{ 'layout.cart.title' | t | escape }}">
+			{% render 'icon-cart-header' with add_class: 'ver-sub' %}
+			<span class="cart-number text-center abs-number">{{ cart.item_count }}</span>	
+		</a>
+		{%- endcapture -%}
+		{%- if header_cart_layout_mobile == 'dropdown' -%}
+		<div class="bt-dropdown" data-group="header__links__mobile">
+			{{ header_cart_link_html }}
+			<div class="bt-dropdown__content bt-dropdown__content--right w100 load-header-cart">
+			</div>
+		</div>
+		{%- else -%}
+		{{ header_cart_link_html }}
+		{%- endif -%}
+	{%- endif -%}
+	{%- if header_cart_layout_mobile != 'dropdown' and header_cart_layout_mobile != 'sidebar' and settings.add_cart_action == 'open_cart' -%}
+		<a href="#" class="hide bt-sidebar-btn header__cart-trigger-mobile" data-target="#bt-sidebar-cart" data-placement="{% unless enable_rtl %}right{% else %}left{% endunless %}" title="{{ 'layout.cart.title' | t | escape }}">&nbsp;</a>
+	{%- endif -%}
+</div>

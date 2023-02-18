@@ -1,0 +1,155 @@
+<div class="header__links header__links--bkg{% if settings.use_sticky %} hide-in-sticky{% endif %}">
+	<div class="container{% if settings.header_wide_display %}-fluid{% endif %}">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="header__links__left f-left">
+					{%- for i in (1..3) -%}
+						{%- assign index_link_title = 'header_style6_link' | append: i | append: '_title' -%}
+						{%- assign index_link_url = 'header_style6_link' | append: i | append: '_url' -%}
+						{%- if settings[index_link_title] != blank -%}
+							<a href="{{ settings[index_link_url] | default: '#' }}" class="header__link header__link--top dib" title="{{ settings[index_link_title] | escape }}">
+								{{ settings[index_link_title] }}
+							</a>
+						{%- endif -%}
+					{%- endfor -%}
+					{%- render 'currency-switcher', addition_classes: 'header__link--top', flex_trigger: false -%}
+					{%- render 'language-picker', addition_classes: 'header__link header__link--top', wrap_class: 'dib', flex_trigger: true -%}
+				</div>
+				{%- if shop.customer_accounts_enabled or settings.enable_compare -%}
+				<div class="header__links__right f-right">
+					{%- if shop.customer_accounts_enabled -%}
+						{%- if customer -%}
+							<a href="{{ routes.account_url }}" class="header__link header__link--top header__link--account dib" title="{{ 'customer.account.title' | t | escape }}">
+								{%- render 'icon-user-circle' -%}
+								{{ 'customer.account.title' | t }}
+							</a>
+							<a href="{{ routes.account_logout_url }}" class="header__link header__link--top dib" title="{{ 'layout.customer.log_out' | t | escape }}">
+								{%- render 'icon-sign-out' -%}
+								{{ 'layout.customer.log_out' | t }}
+							</a>
+						{%- else -%}	
+							<div class="bt-dropdown dib" data-group="header__links">
+								<a class="bt-dropdown__trigger header__link header__link--top header__link--account dib" title="{{ 'customer.account.title' | t | escape }}" href="{{ routes.account_login_url }}">
+									{%- render 'icon-sign-in' -%}
+									{{ 'customer.login.title' | t }}/{{ 'customer.register.title' | t }}
+								</a>
+								<div class="bt-dropdown__content bt-dropdown__content--auto">
+									{%- render 'login-form-header', id: 'customer_login_header', suffix_id_field: 'Header', enable_rtl: enable_rtl, left_holder: left_holder, right_holder: right_holder -%}
+								</div>
+							</div>
+						{%- endif -%}
+					{%- endif -%}
+					{%- if settings.enable_compare -%}
+						<a href="javascript:void(0);" class="header__link header__link--top header__link--compare dib" title="{{ 'general.accessibility.your_compare' | t | escape }}">
+							{%- render 'icon-compare' -%}
+							{{ 'general.accessibility.your_compare' | t }}
+						</a>
+					{%- endif -%}
+					{%- if settings.enable_wishlist -%}
+						<a href="javascript:void(0);" class="header__link header__link--top header__link--wishlist dib" title="{{ 'general.accessibility.your_wishlist' | t | escape }}">
+							{%- render 'icon-wishlist' -%}
+							{{ 'general.accessibility.your_wishlist_html' | t }}
+						</a>
+					{%- endif -%}
+					{%- if settings.header_style6_social_enable -%}
+						<div class="header__social dib header__link">
+							{%- if settings.header_style6_social_facebook != blank -%}
+								<a href="{{ settings.header_style6_social_facebook | escape }}" class="header__social__icon dib">{%- render 'icon-facebook' -%}</a>
+							{%- endif -%}
+							{%- if settings.header_style6_social_twitter != blank -%}
+								<a href="{{ settings.header_style6_social_twitter | escape }}" class="header__social__icon dib">{%- render 'icon-twitter' -%}</a>
+							{%- endif -%}
+							{%- if settings.header_style6_social_pinterest != blank -%}
+								<a href="{{ settings.header_style6_social_pinterest | escape }}" class="header__social__icon dib">{%- render 'icon-pinterest' -%}</a>
+							{%- endif -%}
+							{%- if settings.header_style6_social_whatsapp != blank -%}
+								<a href="{{ settings.header_style6_social_whatsapp | escape }}" class="header__social__icon dib">{%- render 'icon-whatsapp' -%}</a>
+							{%- endif -%}
+						</div>
+					{%- endif -%}
+				</div>
+				{%- endif -%}
+			</div>
+		</div>
+	</div>				
+</div>
+
+<div class="container{% if settings.header_wide_display %}-fluid{% endif %} gutter-top gutter-bottom hide-in-sticky">
+	<div class="row flex flex-align-ver">
+		<div class="col-xs-4 gutter-top gutter-ele-bottom{% if settings.use_sticky %} hide-in-sticky{% endif %}">{% render 'header__logo' %}</div>
+		<div class="col-xs-8 flex flex-align-ver flex-align-hoz-end{% unless settings.header_cart_layout_desktop == 'dropdown' %} gutter-top gutter-ele-bottom{% endunless %} text-right{% if settings.use_sticky %} hide-in-sticky{% endif %}">
+			{%- render 'search-form', search_form_classes: 'dib header__link' -%}
+			{%- if settings.header_style6_support_enable -%}
+				{%- capture support_html_trigger -%}
+					<a class="bt-dropdown__trigger bt-dropdown__trigger--arrow dib support__trigger flex flex-align-ver por" title="{{ 'customer.account.title' | t | escape }}" href="javascript:void(0);" style="padding:{% unless enable_rtl %}10px 40px 10px 20px{% else %}10px 20px 10px 40px{% endunless %};">
+						{%- render 'icon-24' -%}
+						<div class="support__text text-left">
+							{%- if settings.header_style6_support_title != blank -%}<span class="support__title db">{{ settings.header_style6_support_title }}</span>{%- endif -%}
+							{%- if settings.header_style6_support_hotline != blank -%}<span class="support__hotline db">{{ settings.header_style6_support_hotline }}</span>{%- endif -%}
+						</div>
+					</a>
+				{%- endcapture -%}
+				{%- if settings.header_style6_support_enable_area1 or settings.header_style6_support_enable_area2 -%}
+					<div class="bt-dropdown dib support por" data-group="header__links">
+						{{ support_html_trigger | raw }}
+						<div class="support__content bt-dropdown__content bt-dropdown__content--{% unless enable_rtl %}right{% else %}left{% endunless %}">
+							{%- for i in (1..2) -%}
+								{%- assign index_support_area_enable = 'header_style6_support_enable_area' | append: i -%}
+								{%- assign index_support_area_name = 'header_style6_support_name_area' | append: i -%}
+								{%- assign index_support_area_hotline = 'header_style6_support_hotline_area' | append: i -%}
+								{%- assign index_support_area_address = 'header_style6_support_address_area' | append: i -%}
+								{%- assign index_support_area_email = 'header_style6_support_email_area' | append: i -%}
+								{%- if settings[index_support_area_enable] -%}
+								<div class="support__area text-left">
+									{%- if settings[index_support_area_name] != blank -%}<span class="support__area__name db">{{ settings[index_support_area_name] }}</span>{%- endif -%}
+									{%- if settings[index_support_area_hotline] != blank -%}<span class="support__area__hotline db">{{ settings[index_support_area_hotline] }}</span>{%- endif -%}
+									{%- if settings[index_support_area_address] != blank -%}<span class="support__area__address db">{{ settings[index_support_area_address] }}</span>{%- endif -%}
+									{%- if settings[index_support_area_email] != blank -%}<span class="support__area__email db">{{ settings[index_support_area_email] }}</span>{%- endif -%}
+								</div>
+								{%- endif -%}
+							{%- endfor -%}
+							{%- if settings.header_style6_social_enable -%}
+								<div class="support__social text-left">
+									{%- if settings.header_style6_social_facebook != blank -%}
+										<a href="{{ settings.header_style6_social_facebook | escape }}" class="support__social__icon support__social__icon--facebook dib">{%- render 'icon-facebook' -%}</a>
+									{%- endif -%}
+									{%- if settings.header_style6_social_twitter != blank -%}
+										<a href="{{ settings.header_style6_social_twitter | escape }}" class="support__social__icon support__social__icon--twitter dib">{%- render 'icon-twitter' -%}</a>
+									{%- endif -%}
+									{%- if settings.header_style6_social_pinterest != blank -%}
+										<a href="{{ settings.header_style6_social_pinterest | escape }}" class="support__social__icon support__social__icon--pinterest dib">{%- render 'icon-pinterest' -%}</a>
+									{%- endif -%}
+									{%- if settings.header_style6_social_whatsapp != blank -%}
+										<a href="{{ settings.header_style6_social_whatsapp | escape }}" class="support__social__icon support__social__icon--whatsapp dib">{%- render 'icon-whatsapp' -%}</a>
+									{%- endif -%}
+								</div>
+							{%- endif -%}
+						</div>
+					</div>
+				{%- else -%}
+					{{ support_html_trigger | raw }}
+				{%- endif -%}
+			{%- endif -%}
+			{%- unless enable_rtl -%}
+				{%- assign header_cart_addition_classes = 'no-gutter--right' -%}
+			{%- else -%}
+				{%- assign header_cart_addition_classes = 'no-gutter--left' -%}
+			{%- endunless -%}
+			{%- if settings.header_cart_layout_desktop == 'dropdown' -%}
+				{%- render 'header-cart' with header_custom_class: 'gutter-top gutter-ele-bottom', cart_dropdown_direction: 'bt-dropdown__content--right', no_flex: false, no_full_height: true, header_custom_class: 'cart-dropdown-wrap', addition_classes: header_cart_addition_classes, enable_rtl: enable_rtl, left_holder: left_holder, right_holder: right_holder -%}
+			{%- else -%}
+				{%- render 'header-cart', addition_classes: 'dib', addition_classes: header_cart_addition_classes, enable_rtl: enable_rtl, left_holder: left_holder, right_holder: right_holder -%}
+			{%- endif -%}
+		</div>
+	</div>
+</div>
+
+<div class="nav-wrap">
+	<div class="container{% if settings.header_wide_display %}-fluid{% endif %}">
+		<div class="row">
+			<div class="col-xs-12 flex flex-align-hoz header__wrap{% if settings.use_sticky %} use-sticky--desktop{% endif %}">
+				{% section 'navigation' %}
+			</div>
+		</div>
+	</div>
+</div>

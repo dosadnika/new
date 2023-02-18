@@ -1,0 +1,45 @@
+{%- layout none -%}
+{%- liquid
+	capture terms
+    render 'read-url-param' with param_name: 'q'
+  endcapture
+  assign terms = terms | strip | url_decode | split: ','
+-%}
+{%- comment -%}
+The params list
+0. collection_handle
+1. main_thumbnail : "product_image"
+2. truncate_count : 5
+3. show_review_stars : true
+4. limit : 8
+5. slide_per_row : 4
+{%- endcomment -%}
+{%- comment -%} For debug {%- endcomment -%}
+{%- comment -%}
+collection_handle {{ terms[0] }}<br/>
+main_thumbnail {{ terms[1] }}<br/>
+truncate_count {{ terms[2] }}<br/>
+show_review_stars {{ terms[3] }}<br/>
+limit {{ terms[4] }}<br/>{%- endcomment -%}
+{%- assign collection = collections[terms[0]] -%}
+<div class="response">
+	<div class="products">
+		{%- if collection != blank -%}
+			{%- assign main_thumbnail = terms[1] | default: "product_image" -%}
+			{%- assign truncate_count = terms[2] | default: 5 | divided_by : 1 -%}
+			{%- include 'convert-string-to-boolean' with val: terms[3] -%}
+			{%- assign show_review_stars = val -%}
+			{%- assign limit = terms[4] | default: 8 | divided_by : 1 -%}
+			{%- assign slide_per_row = terms[5] | default: 4 | divided_by : 1 -%}
+			{%- for product in collection.products limit: limit -%}
+				{%- include 'product-columns-item' with
+	        main_thumbnail: main_thumbnail,
+	        truncate_count: truncate_count,
+	        show_review_stars: show_review_stars,
+	        slide_per_row: slide_per_row,
+	        index: forloop.index
+	      -%}
+			{%- endfor -%}
+		{%- endif -%}
+	</div>
+</div>

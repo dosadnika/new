@@ -1,0 +1,63 @@
+<div class="{% include 'rich-banner-item-size' %} banner-item banner-item--{{ block.id }}{% if block.settings.hide_on_mobile %} hidden-xs{% endif %}{% if block.settings.hide_on_desktop %} hidden-sm hidden-md hidden-lg{% endif %}{% if section.settings.enable_slider %}{{ slider_class }}{% if current_index_mobile > lazyload_index_mobile %} ov-slider-mb{% endif %}{% if current_index_tb > lazyload_index %} ov-slider-tb{% endif %}{% endif %}" {{ block.shopify_attributes }}>
+  {%- capture banner_html -%}
+    {%- assign collection = collections[block.settings.collection] -%}
+    {%- assign limit = block.settings.limit -%}
+    {%- assign product_item_size = block.settings.product_item_size -%}
+    {%- if block.settings.title != blank -%}
+      <div class="rb__products-title section__title text-{{ block.settings.heading_align }}">
+        <span class="rb__products-title__text dib text-uppercase"{% if block.settings.heading_color %} style="color:{{ block.settings.heading_color }};"{% endif %}>{{ block.settings.title }}</span>
+        {%- if block.settings.subtitle != blank -%}
+          <div class="rb__products-subtitle section__sub-title w100 text-uppercase"{% if block.settings.subheading_color %} style="color:{{ block.settings.subheading_color }};"{% endif %}>{{ block.settings.subtitle }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+    
+    <div class="products grid grid--border grid--{{ product_item_size }}{% if collection != blank %} gutter-bottom gutter-ele-bottom-mb{% endif %}" id="products-{{ section.id }}-{{ block.id }}">
+      {%- if collection != blank -%}
+        {%- if product_item_size == 'small' -%}
+          {%- assign column_count = 5 -%}
+        {%- elsif product_item_size == 'medium' -%}
+          {%- assign column_count = 4 -%}
+        {%- elsif product_item_size == 'large' -%}
+          {%- assign column_count = 3 -%}
+        {%- else -%}
+          {%- assign column_count = 2 -%}  
+        {%- endif -%}
+        {%- for product in collection.products limit: limit -%}
+        	{%- include 'product-grid-item' with 
+            use_slider: false, 
+            index: forloop.index, 
+            lazy_index: 0,
+            column_count: column_count, 
+            main_thumbnail: block.settings.main_thumbnail, 
+            truncate_count: block.settings.product_name_size,
+            enable_product_options: block.settings.enable_product_options, 
+            show_review_stars: block.settings.show_review_stars,
+            enable_small_images: false,
+            show_wishlist_btn: block.settings.show_wishlist_btn,
+            small_image: '1x',
+            show_label : block.settings.show_label,
+            show_cart_btn: block.settings.show_cart_btn,
+            show_wishlist : false,
+            show_compare_btn: block.settings.show_compare_btn,
+            show_qs_btn: block.settings.show_qs_btn,
+            small_image_slider: false,
+            show_countdown_timer: block.settings.show_countdown_timer,
+            show_vendor: block.settings.show_vendor,
+            withinCollection: collection
+          -%}
+        {%- endfor -%}
+      {%- else -%}
+        {% for i in (1..limit) %}
+          {%- include 'product-grid-item-placeholder' -%}
+        {% endfor %}
+      {%- endif -%}
+    </div>
+    {%- if collection != blank -%}
+    <div class="gutter-top gutter-ele-top-mb text-{{ block.settings.heading_align }} mobile-text-center">
+      <a class="button button--style2" href="{{ collection.url }}" title="{{ block.settings.view_all_text | escape }}">{{ block.settings.view_all_text }}</a>
+    </div>
+    {%- endif -%}
+  {%- endcapture -%}
+  {%- include 'rich-banner-display' -%}
+</div>

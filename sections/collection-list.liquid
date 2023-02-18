@@ -1,0 +1,168 @@
+{%- include 'section-background-start' -%}
+<div class="container{% if section.settings.full_width %}-fluid{% endif %}{% include 'section-gutters-nobkg' %}" data-section-id="{{ section.id }}" data-section-type="collection-list" id="collection-list-{{ section.id }}">
+  <div class="row">
+    <div class="section__inner col-xs-12">
+      {%- include 'section-heading' -%}
+      <div class="section__content">
+        {%- if section.blocks.size > 0 -%}
+        {% case section.settings.grid %}
+          {% when 2 %}
+            {%- assign grid_item_width = 'col-sm-6' -%}
+          {% when 3 %}
+            {%- assign grid_item_width = 'col-sm-4' -%}
+          {% when 4 %}
+            {%- assign grid_item_width = 'col-sm-3' -%}
+          {% when 5 %}
+            {%- assign grid_item_width = 'col-sm-20' -%}
+          {% when 6 %}
+            {%- assign grid_item_width = 'col-sm-2' -%}  
+        {% endcase %}
+
+        {%- assign collection_color_count = blank -%}
+        {%- if section.settings.color_title != blank -%}
+          {%- assign collection_color_count = section.settings.color_title | color_modify: 'alpha', 0.6 -%}
+        {%- endif -%}
+        {% if section.blocks.size > 1 %}
+          {%- assign grid_item_width_small = 'col-xs-6' -%}
+        {% else %}
+          {%- assign grid_item_width_small = 'col-xs-12' -%}
+        {% endif %}
+        <div class="row flex"{% if section.blocks.size > 0 %} style="margin-bottom: -10px;"{% endif %}>
+          {% for block in section.blocks %}
+            <div class="{{ grid_item_width_small }} {{ grid_item_width }} grid__item" {{ block.shopify_attributes }}>
+              {%- assign collection = collections[block.settings.collection] -%}
+              {% render 'collection-grid-item' with collection as collection, collection_bkg_title: section.settings.bkg_title, collection_color_title: section.settings.color_title, collection_color_count: collection_color_count, custom_image: block.settings.custom_image, custom_title: block.settings.custom_title %}
+            </div>
+          {% endfor %}
+        </div>
+        {%- endif -%}
+
+        {% if section.blocks.size == 0 %}
+          {% render 'no-blocks' %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{%- include 'section-background-end' -%}
+{% schema %}
+  {
+    "name": "Collection list",
+    "class": "index-section collection-list dib w100",
+    "max_blocks": 12,
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "[View the guide for this section](https://woodstock-docs.boostheme.com/dynamic-sections/collection-product/collection-list-section)"
+      },
+      {
+        "type": "header",
+        "content": "Background color"
+      },
+      {
+        "type": "checkbox",
+        "id": "bkg_enable",
+        "label": "Enable",
+        "default": false
+      },
+      {
+        "type": "color",
+        "id": "section_bkg",
+        "label": "Pick a color"
+      },
+      {
+        "type": "header",
+        "content": "Section Gutters"
+      },
+      {
+        "type": "checkbox",
+        "id": "top_gutter",
+        "label": "Enable top gutter",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "bottom_gutter",
+        "label": "Enable bottom gutter",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "General Settings"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Collection list"
+      },
+      {
+        "type": "text",
+        "id": "sub_title",
+        "label": "Sub heading"
+      },
+      {
+        "type": "range",
+        "id": "grid",
+        "label": "Collections per row",
+        "min": 2,
+        "max": 6,
+        "step": 1,
+        "default": 3
+      },
+      {
+        "type": "color",
+        "id": "color_title",
+        "label": "Title color",
+        "default": "#fff"
+      },
+      {
+        "type": "checkbox",
+        "id": "full_width",
+        "label": "Wide display"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "featured_collection",
+        "name": "Collection",
+        "settings": [
+          {
+            "label": "Collection",
+            "id": "collection",
+            "type": "collection"
+          },
+          {
+            "type": "image_picker",
+            "id": "custom_image",
+            "label": "Custom image",
+            "info": "Leave empty to show the collection image or first product image in the collection."
+          },
+          {
+            "type": "text",
+            "id": "custom_title",
+            "label": "Custom title",
+            "info": "Leave empty to show the collection title."
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Collection list",
+        "category": "Collection",
+        "blocks": [
+          {
+            "type": "featured_collection"
+          },
+          {
+            "type": "featured_collection"
+          },
+          {
+            "type": "featured_collection"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

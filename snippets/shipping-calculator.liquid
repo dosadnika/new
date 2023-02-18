@@ -1,0 +1,54 @@
+{% unless settings.shipping_calculator == 'Disabled' %}
+<div id="shipping-calculator" class="shipping-calculator big-gutter-top">
+  <h3 class="text-left gutter-ele-bottom">{{ settings.shipping_calculator_heading | default: 'Get shipping estimates' }}</h3>
+  <div class="shipping-calculator__fields flex">
+    <div class="field">
+      <label for="address_country" class="text-left">{{ 'customer.addresses.country' | t }}</label>
+      <div class="select select--est-field">
+        <select id="address_country" name="address[country]" data-default="{% if shop.customer_accounts_enabled and customer %}{{ customer.default_address.country }}{% elsif settings.shipping_calculator_default_country != '' %}{{ settings.shipping_calculator_default_country }}{% endif %}" class="est-field">{{ country_option_tags }}</select>
+      </div>
+    </div>
+    <div class="field" id="address_province_container" style="display:none;">
+      <label for="address_province" id="address_province_label"  class="text-left">{{ 'customer.addresses.province' | t }}</label>
+      <div class="select select--est-field">
+        <select id="address_province" name="address[province]" data-default="{% if shop.customer_accounts_enabled and customer and customer.default_address.province != '' %}{{ customer.default_address.province }}{% endif %}" class="est-field"></select>
+      </div>
+    </div>  
+    <p class="field">
+      <label for="address_zip"  class="text-left">{{ 'customer.addresses.zip' | t }}</label>
+      <input type="text" id="address_zip" name="address[zip]"{% if shop.customer_accounts_enabled and customer %} value="{{ customer.default_address.zip }}"{% endif %} class="est-field" />
+    </p>
+    <p class="field">
+      <input type="button" class="get-rates btn button button--style1" value="{{ settings.shipping_calculator_submit_button_label | default: 'Calculate shipping' }}"/>
+    </p>
+  </div>
+  <div id="wrapper-response"></div>
+</div>
+{% endunless %}
+
+<script id="shipping-calculator-response-template" type="text/template">
+  {% raw %}
+  <p id="shipping-rates-feedback" {{#if success}} class="success" {{else}} class="error" {{/if}}>
+    {{#if success}}
+    {{#if rates}}
+  {% endraw %}  
+    <span class="shipping-calculator__carriers">{{ 'cart.shipping_calculator.carriers' | t }} :</span><br/>
+  {% raw %}  
+    {{#rates}}
+    - {{ name }} : {{{price}}}.<br/>
+    {{/rates}}
+    {{else}}
+  {% endraw %}
+    {{ 'cart.shipping_calculator.do_not_ship' | t }}
+  {% raw %}    
+    {{/if}}    
+    {{else}}
+    {{ errorFeedback }}
+    {{/if}}
+  </p>
+  {% endraw %}
+</script>
+
+<!--[if lte IE 8]>
+<style> #shipping-calculator { display: none; } </style>
+<![endif]-->

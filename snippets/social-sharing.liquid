@@ -1,0 +1,25 @@
+<ul class="social-sharing list--inline" style="margin: 0 -10px;">
+  {% if settings.share_facebook %}
+    <li style="padding: 0 10px;">
+      <a style="font-size:20px;" target="_blank" href="//www.facebook.com/sharer.php?u={{ shop.url | append: share_permalink }}" class="btn btn--small btn--share share-facebook" title="{{ 'general.social.share_on_facebook' | t | escape }}">
+        {% render 'icon-facebook' with add_class: 'ver-sub' %}
+      </a>
+    </li>
+  {% endif %}
+
+  {% if settings.share_twitter %}
+    <li style="padding: 0 10px;">
+      <a style="font-size:20px;" target="_blank" href="//twitter.com/share?text={{ share_title | url_param_escape }}&amp;url={{ shop.url | append: share_permalink }}" class="btn btn--small btn--share share-twitter" title="{{ 'general.social.share_on_twitter' | t | escape }}">
+        {% render 'icon-twitter' with add_class: 'ver-sub' %}
+      </a>
+    </li>
+  {% endif %}
+
+  {% if settings.share_pinterest %}
+    <li style="padding: 0 10px;">
+      <a style="font-size:20px;" target="_blank" href="//pinterest.com/pin/create/button/?url={{ shop.url | append: share_permalink }}&amp;media={{ share_image | img_url: '1024x1024' }}&amp;description={{ share_title | url_param_escape }}" class="btn btn--small btn--share share-pinterest" title="{{ 'general.social.share_on_pinterest' | t | escape }}">
+        {% render 'icon-pinterest' with add_class: 'ver-sub' %}
+      </a>
+    </li>
+  {% endif %}
+</ul>

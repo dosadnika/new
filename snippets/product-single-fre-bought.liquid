@@ -1,0 +1,23 @@
+{%- include 'product-single-fre-bought-content' -%}
+{%- if fre_show > 0 or settings.cross_sell_rule == 'auto' -%}
+<div class="container{% render 'wide-css-class' %} fre-bought freb{% unless layout_name contains 'layout4' %} big-gutter-top{% else %} big-gutter-top gutter-ele-top-tbs{% endunless %} big-gutter-bottom">
+	<div class="row">
+		<div class="col-xs-12">
+      <h2 class="text-uppercase gutter-bottom gutter-ele-bottom-tbs margin0">
+        <span class="section__title__text gutter-ele-bottom dib">{{ 'products.product.fre_bought' | t }}</span>
+      </h2>
+    	<div class="freb__border">
+    		<div class="row freb__inner margin0 flex">
+					{%- if fre_show > 0 -%}
+						{{ fre_bought_content }}
+					{%- else -%}
+						<div class="loading-not-full load-crossell" data-handle="{{ product.handle | escape }}" data-product-id="{{ product.id }}" data-view="recommendation_widget" data-limit="{{ cart.item_count | plus: 3 }}" style="margin-top:50px;">
+	            <i class="loading-ajax"></i>
+	          </div>	
+					{%- endif -%}
+				</div>
+    	</div>
+		</div>
+	</div>
+</div>
+{%- endif %}

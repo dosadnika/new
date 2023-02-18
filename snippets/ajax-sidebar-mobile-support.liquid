@@ -1,0 +1,45 @@
+<a class="dib support__trigger expand-trigger w100" title="{{ 'customer.account.title' | t | escape }}" href="javascript:void(0);">
+{%- render 'icon-24', add_classes: 'ignore' -%}
+<div class="support__text text-left dib">
+	{%- if settings.header_style6_support_title != blank -%}<span class="support__title db">{{ settings.header_style6_support_title }}</span>{%- endif -%}
+	{%- if settings.header_style6_support_hotline != blank -%}<span class="support__hotline db">{{ settings.header_style6_support_hotline }}</span>{%- endif -%}
+</div>
+{%- unless enable_rtl -%}
+	{%- render 'icon-collapse', add_classes: 'pull-right' -%}
+{%- else -%}
+	{%- render 'icon-collapse', add_classes: 'pull-left' -%}	
+{%- endunless -%}
+</a>
+<div class="expand-content support__content" style="display:none;">
+{%- for i in (1..2) -%}
+	{%- assign index_support_area_enable = 'header_style6_support_enable_area' | append: i -%}
+	{%- assign index_support_area_name = 'header_style6_support_name_area' | append: i -%}
+	{%- assign index_support_area_hotline = 'header_style6_support_hotline_area' | append: i -%}
+	{%- assign index_support_area_address = 'header_style6_support_address_area' | append: i -%}
+	{%- assign index_support_area_email = 'header_style6_support_email_area' | append: i -%}
+	{%- if settings[index_support_area_enable] -%}
+	<div class="support__area text-left">
+		{%- if settings[index_support_area_name] != blank -%}<span class="support__area__name db">{{ settings[index_support_area_name] }}</span>{%- endif -%}
+		{%- if settings[index_support_area_hotline] != blank -%}<span class="support__area__hotline db">{{ settings[index_support_area_hotline] }}</span>{%- endif -%}
+		{%- if settings[index_support_area_address] != blank -%}<span class="support__area__address db">{{ settings[index_support_area_address] }}</span>{%- endif -%}
+		{%- if settings[index_support_area_email] != blank -%}<span class="support__area__email db">{{ settings[index_support_area_email] }}</span>{%- endif -%}
+	</div>
+	{%- endif -%}
+{%- endfor -%}
+{%- if settings.header_style6_social_enable -%}
+	<div class="support__social text-left">
+		{%- if settings.header_style6_social_facebook != blank -%}
+			<a href="{{ settings.header_style6_social_facebook | escape }}" class="support__social__icon support__social__icon--facebook dib">{%- render 'icon-facebook' -%}</a>
+		{%- endif -%}
+		{%- if settings.header_style6_social_twitter != blank -%}
+			<a href="{{ settings.header_style6_social_twitter | escape }}" class="support__social__icon support__social__icon--twitter dib">{%- render 'icon-twitter' -%}</a>
+		{%- endif -%}
+		{%- if settings.header_style6_social_pinterest != blank -%}
+			<a href="{{ settings.header_style6_social_pinterest | escape }}" class="support__social__icon support__social__icon--pinterest dib">{%- render 'icon-pinterest' -%}</a>
+		{%- endif -%}
+		{%- if settings.header_style6_social_whatsapp != blank -%}
+			<a href="{{ settings.header_style6_social_whatsapp | escape }}" class="support__social__icon support__social__icon--whatsapp dib">{%- render 'icon-whatsapp' -%}</a>
+		{%- endif -%}
+	</div>
+{%- endif -%}
+</div>

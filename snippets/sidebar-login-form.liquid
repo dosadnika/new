@@ -1,0 +1,15 @@
+{%- if shop.customer_accounts_enabled -%}
+	{%- unless customer -%}
+	<div class="bt-sidebar hide">
+	  <div id="sidebar-login-form" class="bt-sidebar__inner">
+	  	<div class="bt-sidebar__header flex{% if settings.enable_rtl and settings.rtl_language_codes contains request.locale.iso_code %} bt-sidebar__header--right{% endif %}">
+	  		{%- include 'sidebar-close-btn' -%}
+	  		<h4 class="bt-sidebar__title">{{ 'customer.login.title' | t }}</h4>
+	  	</div>
+	    <div class="bt-sidebar__content">
+	      {%- include 'login-form-header', id: 'customer_login_header_mobile', suffix_id_field: 'HeaderMobile' -%}
+	    </div>
+	  </div>
+	</div>
+	{%- endunless -%}
+{%- endif -%}

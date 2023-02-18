@@ -1,0 +1,97 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <h2 class="page-title hide text-center">{{ 'customer.recover_password.title' | t }}</h2>
+      <div class="page-content w100">
+        <div class="hide note form-success text-center alert alert-success col-xs-12 col-sm-5 center-block" id="ResetSuccess" style="float:none;">
+          {{ 'customer.recover_password.success' | t }}
+        </div>
+        <div id="CustomerLoginForm" class="center-block col-xs-12 col-sm-5 no-gutter" style="float:none;">
+          {% form 'customer_login' %}
+          {{ form.errors | default_errors | replace: 'class="errors"','class="errors alert alert-danger"' }}
+          <div class="field field--float-label">
+            <label for="CustomerEmail">{{ 'customer.login.email' | t }}</label>
+            <input type="email" name="customer[email]" id="CustomerEmail" class="w100{% if form.errors contains 'email' %} input--error{% endif %}" autocomplete="email" autocorrect="off" autocapitalize="off" autofocus>
+            <span class="field__focus"></span>
+          </div>
+
+          {% if form.password_needed %}
+          <div class="field field--float-label">
+            <label for="CustomerPassword">{{ 'customer.login.password' | t }}</label>
+            <input type="password" value="" name="customer[password]" id="CustomerPassword" class="w100{% if form.errors contains 'password' %} input--error{% endif %}" autocomplete="current-password">
+            <span class="field__focus"></span>
+          </div>
+          {% endif %}
+          {%- liquid 
+            unless settings.enable_rtl and settings.rtl_language_codes contains request.locale.iso_code
+              assign left_holder = 'left'
+              assign right_holder = 'right'
+            else
+              assign left_holder = 'right'
+              assign right_holder = 'left'
+            endunless  
+          -%}
+
+          <div class="text-center distance-top-ele gutter-ele-top dib w100">
+            <div class="pull-{{ left_holder }} text-left" style="width: 50%;">
+              <input type="submit" class="button button--style2 flex" value="{{ 'customer.login.sign_in' | t }}">  
+              {% if form.password_needed %}
+                <p class="distance-top-ele w100"><a href="#recover" id="RecoverPassword" title="{{ 'customer.login.forgot_password' | t | escape }}" style="font-size:13px;text-decoration:underline;">{{ 'customer.login.forgot_password' | t }}</a></p>
+              {% endif %}
+            </div>
+            <div class="pull-{{ right_holder }} text-right" style="width: 50%;">
+              <a class="button button--style1 flex" href="{{ routes.account_register_url }}" title="{{ 'layout.customer.create_account' | t | escape }}">
+                {{ 'layout.customer.create_account' | t }}
+              </a>
+            </div>
+          </div>
+          {% endform %}
+        </div>
+        <div id="RecoverPasswordForm" class="center-block col-xs-12 col-sm-5 col-lg-3 no-gutter hide" style="float:none;">
+          <div class="text-center">{{ 'customer.recover_password.subtext' | t }}</div>
+          {% form 'recover_customer_password' %}
+
+            {{ form.errors | default_errors | replace: 'class="errors"','class="errors alert alert-danger"' }}
+
+            {% comment %}
+              Add a hidden span to indicate the form was submitted succesfully.
+            {% endcomment %}
+            {% if form.posted_successfully? %}
+              <span class="hide reset-password-success"></span>
+            {% endif %}
+
+            <div class="field field--float-label">
+              <label for="RecoverEmail">{{ 'customer.recover_password.email' | t }}</label>
+              <input type="email" value="" name="email" id="RecoverEmail" class="w100" autocomplete="email" autocorrect="off" autocapitalize="off">
+              <span class="field__focus"></span>
+            </div>
+
+            <div class="text-center distance-top-ele gutter-ele-top dib w100">
+              <div class="pull-{{ left_holder }}">
+                <input type="submit" class="button button--style2 flex" value="{{ 'customer.recover_password.submit' | t }}">
+              </div>
+
+              <div class="pull-{{ right_holder }}">
+                <button type="button" id="HideRecoverPasswordLink" class="button flex button--style1">{{ 'customer.recover_password.cancel' | t }}</button>
+              </div>
+            </div>
+          {% endform %}
+        </div>
+        {% comment %}
+          If accounts are set as optional, the following will be shown as an option
+          during checkout, not on the default /login page.
+        {% endcomment %}
+        {% if shop.checkout.guest_login %}
+          <div class="text-center">
+            <hr class="hr--invisible">
+            <h2>{{ 'customer.login.guest_title' | t }}</h2>
+
+            {% form 'guest_login' %}
+              <input type="submit" class="button button--style2" value="{{ 'customer.login.guest_continue' | t }}">
+            {% endform %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

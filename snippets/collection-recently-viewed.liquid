@@ -1,0 +1,10 @@
+{%- if settings.recent_view_enable and settings.recent_view_collection_enable -%}
+  <div class="cf__item dib w100 cf__item--recent-view hide">
+    <a class="cf__item__title flex flex-align-space-between expand-trigger open" href="#" title="{{ 'collections.general.recent_view' | t | escape }}">
+      <span>{{ 'collections.general.recent_view' | t }}</span>
+      {%- render 'icon-collapse' -%}
+    </a>
+    <div class="cf__item__content expand-content cf__item--recent-view__content pcol__items" data-limit="{{ settings.recent_view_collection_limit }}">
+    </div>
+  </div>
+{%- endif -%}

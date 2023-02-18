@@ -1,0 +1,121 @@
+<div class="banner-item__image col-xs-12 no-gutter">
+{%- if block.settings.image != blank -%}
+	{%- assign img_url = block.settings.image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+
+	{%- if block.settings.image_mobile != blank and block.settings.image_mobile.alt != blank -%}
+	  {%- assign image_mobile_title = block.settings.image_mobile.alt -%}
+	{%- else -%}
+		{%- assign image_mobile_title = block.settings.image.alt -%}
+	{%- endif -%}
+  
+  {%- assign current_index_1 = current_index_tb -%}
+  {%- assign current_index_2 = current_index_mobile -%}
+  {%- assign lazyload_index_1 = lazyload_index -%}
+  {%- assign lazyload_index_2 = lazyload_index_mobile -%}
+  {%- if block.settings.hide_on_desktop -%}
+  	{%- assign current_index_1 = current_index_mobile -%}
+  	{%- assign lazyload_index_1 = lazyload_index_mobile -%}
+  {%- endif -%}
+  {%- if block.settings.hide_on_mobile -%}
+  	{%- assign current_index_2 = current_index_tb -%}
+  	{%- assign lazyload_index_2 = lazyload_index_tb -%}
+  {%- endif -%}
+
+  {%- assign effect_classes = '' -%}
+  {%- if block.settings.effect_enable -%}
+  	{%- assign effect_classes = ' rb__effect' -%}
+  	{%- if block.settings.effect_trans_zoom -%}
+  		{%- assign effect_classes = effect_classes | append: ' rb__effect--zoom' -%}
+  	{%- endif -%}
+  	{%- if block.settings.effect_trans_slide -%}
+  		{%- assign effect_classes = effect_classes | append: ' rb__effect--slide' -%}
+  	{%- endif -%}
+  	{%- if block.settings.effect_trans_border -%}
+  		{%- assign effect_classes = effect_classes | append: ' rb__effect--border' -%}
+  	{%- endif -%}
+  	{%- if block.settings.effect_color != 'none' -%}
+  		{%- assign effect_classes = effect_classes | append: ' rb__effect--' | append: block.settings.effect_color -%}
+  	{%- endif -%}
+  {%- endif -%}
+
+	{%- if block.settings.image_link != blank -%}
+		{%- if block.settings.hide_on_desktop == false or block.settings.image_mobile == blank -%}
+			<div class="w100 {% if block.settings.image_alignment != 'center' %}pull-{{ block.settings.image_alignment }}{% else %}center-block{% endif %}" style="max-width:{{ block.settings.image.width }}px;max-height:{{ block.settings.image.height }}px;">
+				<a href="{{ block.settings.image_link }}"{% if block.settings.image_link_new_tab %} target="_blank"{% endif %} class="img-container{% if block.settings.image_mobile != blank %} hidden-xs{% endif %}{{ effect_classes }}{% unless section.settings.enable_slider or block.settings.is_lcp %} loading{% endunless %}" style="padding-top:{{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100}}%;" title="{{ block.settings.image.alt | escape }}">
+					{%- if block.settings.image_mobile == blank and block.settings.is_lcp == true -%}
+						<img class="img-abs img-responsive" alt="{{ block.settings.image.alt | escape }}"{% render 'responsive-image' with block.settings.image as image %}>
+						{%- render 'lcp-mark' with image: block.settings.image -%}
+					{%- else -%}
+						<img data-aspectratio="{{ block.settings.image.aspect_ratio }}"
+		            data-src="{{ img_url }}"
+		            data-sizes="auto" class="img-abs img-responsive lazyload zoom-fade" alt="{{ block.settings.image.alt | escape }}" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}"{% render 'img-one-pixel' %} data-expand="-50"/>
+					{%- endif -%}
+				</a>
+			</div>
+		{%- endif -%}
+		
+		{%- unless block.settings.hide_on_mobile -%}
+			{%- if block.settings.image_mobile != blank -%}
+				<div class="w100 {% if block.settings.image_alignment != 'center' %}pull-{{ block.settings.image_alignment }}{% else %}center-block{% endif %}" style="max-width:{{ block.settings.image_mobile.width }}px;max-height:{{ block.settings.image_mobile.height }}px;">
+					<a href="{{ block.settings.image_link }}"{% if block.settings.image_link_new_tab %} target="_blank"{% endif %} class="img-container visible-xs{{ effect_classes }}{% unless section.settings.enable_slider or block.settings.is_lcp %} loading{% endunless %}" style="padding-top:{{ 1 | divided_by: block.settings.image_mobile.aspect_ratio | times: 100}}%;" title="{{ image_mobile_title | escape }}">
+		    		{%- assign img_mobile_url = block.settings.image_mobile | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+		    		{%- if block.settings.is_lcp -%}
+		    			<img class="img-abs img-responsive{% if block.settings.image_alignment == 'center' %} center-block{% endif %}" alt="{{ image_mobile_title | escape }}"{% render 'responsive-image' with block.settings.image_mobile as image %}>
+		    			{%- render 'lcp-mark' with image: block.settings.image_mobile -%}
+		    		{%- else -%}
+		    			<img data-aspectratio="{{ block.settings.image_mobile.aspect_ratio }}"
+			          data-src="{{ img_mobile_url }}"
+			          data-sizes="auto" class="img-abs img-responsive lazyload{% if block.settings.image_alignment == 'center' %} center-block{% endif %}" alt="{{ image_mobile_title | escape }}" width="{{ block.settings.image_mobile.width }}" height="{{ block.settings.image_mobile.height }}"{% render 'img-one-pixel' %} data-expand="-50"/>
+		        {%- endif -%}  
+		    	</a>
+		    </div>
+	  	{%- endif -%}
+  	{%- endunless -%}
+	{%- else -%}
+		{%- if block.settings.hide_on_desktop == false or block.settings.image_mobile == blank -%}
+			<div class="w100 {% if block.settings.image_alignment != 'center' %}pull-{{ block.settings.image_alignment }}{% else %}center-block{% endif %}" style="max-width:{{ block.settings.image.width }}px;max-height:{{ block.settings.image.height }}px;">
+				<div class="img-container{% if block.settings.image_mobile != blank %} hidden-xs{% endif %}{{ effect_classes }}{% unless section.settings.enable_slider or block.settings.is_lcp %} loading{% endunless %}" style="padding-top:{{ 1 | divided_by: block.settings.image.aspect_ratio | times: 100}}%;">
+					{%- if block.settings.image_mobile == blank and block.settings.is_lcp == true -%}
+						<img class="img-abs img-responsive" alt="{{ block.settings.image.alt | escape }}"{% render 'responsive-image' with block.settings.image as image %}>
+						{%- render 'lcp-mark' with image: block.settings.image -%}
+					{%- else -%}
+						<img data-aspectratio="{{ block.settings.image.aspect_ratio }}"
+		            data-src="{{ img_url }}"
+		            data-sizes="auto" class="img-abs img-responsive lazyload zoom-fade" alt="{{ block.settings.image.alt | escape }}" width="{{ block.settings.image.width }}" height="{{ block.settings.image.height }}"{% render 'img-one-pixel' %} data-expand="-50"/>
+					{%- endif -%}
+				</div>
+			</div>
+		{%- endif -%}
+		
+		{%- unless block.settings.hide_on_mobile -%}
+			{%- if block.settings.image_mobile != blank -%}
+				{%- assign img_mobile_url = block.settings.image_mobile | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+				<div class="w100 {% if block.settings.image_alignment != 'center' %}pull-{{ block.settings.image_alignment }}{% else %}center-block{% endif %}" style="max-width:{{ block.settings.image_mobile.width }}px;max-height:{{ block.settings.image_mobile.height }}px;">
+					<div class="img-container visible-xs{{ effect_classes }}{% unless section.settings.enable_slider or block.settings.is_lcp %} loading{% endunless %}" style="padding-top:{{ 1 | divided_by: block.settings.image_mobile.aspect_ratio | times: 100}}%;">
+		    		{%- if block.settings.is_lcp -%}
+		    			<img class="img-abs img-responsive{% if block.settings.image_alignment == 'center' %} center-block{% endif %}" alt="{{ image_mobile_title | escape }}"{% render 'responsive-image' with block.settings.image_mobile as image %}>
+		    			{%- render 'lcp-mark' with image: block.settings.image_mobile -%}
+		    		{%- else -%}
+		    			<img data-aspectratio="{{ block.settings.image_mobile.aspect_ratio }}"
+			          data-src="{{ img_mobile_url }}"
+			          data-sizes="auto" class="img-abs img-responsive lazyload{% if block.settings.image_alignment == 'center' %} center-block{% endif %}" alt="{{ image_mobile_title | escape }}" width="{{ block.settings.image_mobile.width }}" height="{{ block.settings.image_mobile.height }}"{% render 'img-one-pixel' %} data-expand="-50"/>
+		        {%- endif -%}  
+		      </div>
+	      </div>    
+	  	{%- endif -%}
+  	{%- endunless -%}     
+	{%- endif -%}
+{% else %}
+	{%- if section.settings.enable_slider -%}
+		{%- assign real_image_size = section.settings.item_size -%}
+	{%- else -%}	
+		{%- assign real_image_size = block.settings.item_size -%}
+	{%- endif -%}
+	{%- if real_image_size == 'full' or real_image_size == 12  -%}
+	  {% capture current %}{% cycle 1, 2 %}{% endcapture %}
+    {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+  {%- else -%}
+  	{{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}	  
+	{%- endif -%}
+{%- endif -%}
+</div>	

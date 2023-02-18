@@ -1,0 +1,186 @@
+{%- render 'section-background-start' -%}
+<div id="newsletter_{{ section.id }}" class="container{% if section.settings.full_width %}-fluid{% endif %}{% render 'section-gutters-nobkg' %}" data-section-id="{{ section.id }}" data-section-type="newsletter">
+  <div class="row">
+    <div class="section__inner col-xs-12">
+      {%- render 'section-heading' -%}
+      <div class="section__content">
+        <div class="row flex flex-wrap flex-align-ver" style="justify-content:space-around;">
+          {%- if section.settings.text != blank -%}
+          <div class="col-xs-12 col-sm-6" style="margin-top:7px;">
+            <span style="font-weight: bold;letter-spacing: 1px;font-size:{{ section.settings.text_fs }}px;{% if section.settings.text_color != blank %}color:{{ section.settings.text_color }};{% endif %}" class="f-right">{{ section.settings.text }}</span>
+          </div>
+          {%- endif -%}
+          <div class="col-xs-12{% if section.settings.text != blank %} col-sm-4{% endif %} text-left">
+            {%- assign section_news_form_id = 'newsletter-section-form-' | append: section.id -%}
+            {%- assign section_news_input_id = 'SectionNewsletterEmail-' | append: section.id -%}
+            {%- if settings.news_platform == 'shopify' -%}
+            {% form 'customer', id: section_news_form_id, class: 'newsletter-form' %}
+              {{ form.errors | default_errors | replace: 'class="errors"','class="errors alert alert-danger"' }}
+              {%- if form.posted_successfully? -%}
+                <div class="note form-success text-center alert alert-success col-xs-12 col-sm-5 center-block" style="float:none;">
+                  {{ 'general.newsletter_form.confirmation' | t }}
+                </div>
+              {%- endif -%}
+              <div class="field field--float-label" style="margin-top: 0;">
+                <label for="{{ section_news_input_id }}">{{ 'general.newsletter_form.email_placeholder' | t }}</label>
+                <input type="email" name="contact[email]" id="{{ section_news_input_id }}" class="w100{% if form.errors contains 'email' %} input--error{% endif %}" autocapitalize="off" style="height:40px;line-height:40px;background:none;border:none;border-bottom: 1px {{ section.settings.input_border_color }} solid;color:{{ section.settings.input_color }};font-size:{{ section.settings.input_fs }}px;">
+                <button type="submit" class="button button--style1 newsletter__submit button--icon" name="commit" aria-label="button" style="border:none;background:none;font-size:23px;color:{{ section.settings.icon_color }};">
+                  {%- render 'icon-email' -%}
+                </button>
+              </div>
+              {%- if settings.news_terms_enable and settings.news_platform == 'shopify' -%}
+                {%- assign section_news_terms_input_id = 'SectionNewsletterTerms-' | append: section.id -%}
+                {%- render 'newsletter-terms' with inputId: section_news_terms_input_id -%}
+              {%- endif -%}
+            {% endform %}
+          {%- elsif settings.news_platform == 'klaviyo' and section.settings.klaviyo_embed_code != blank -%}
+          {{ section.settings.klaviyo_embed_code | raw }}  
+          {%- elsif settings.news_platform == 'mailchimp' -%}
+            {{ settings.news_mailchimp_html | raw }}
+          {%- endif -%}
+          </div>
+          {%- if section.settings.text != blank -%}<div class="col-sm-2 hidden-xs"></div>{%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{%- render 'section-background-end' -%}
+{% schema %}
+  {
+    "name": "Newsletter",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "[View the guide for this section](https://woodstock-docs.boostheme.com/dynamic-sections/marketing-and-others/newsletter)"
+      },
+      {
+        "type": "header",
+        "content": "Background color"
+      },
+      {
+        "type": "checkbox",
+        "id": "bkg_enable",
+        "label": "Enable",
+        "default": true
+      },
+      {
+        "type": "color",
+        "id": "section_bkg",
+        "label": "Pick a color",
+        "default": "#f7f7f7"
+      },
+      {
+        "type": "header",
+        "content": "Section Gutters"
+      },
+      {
+        "type": "checkbox",
+        "id": "top_gutter",
+        "label": "Enable top gutter",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "bottom_gutter",
+        "label": "Enable bottom gutter",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "General Settings"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Subscribe your email"
+      },
+      {
+        "type": "text",
+        "id": "sub_title",
+        "label": "Subheading"
+      },
+      {
+        "type": "text",
+        "id": "klaviyo_embed_code",
+        "label": "Klaviyo embed code",
+        "info": "Only work when you choose the newsletter platform is Klaviyo in Theme settings > Newsletter > Platform."
+      },
+      {
+        "type": "checkbox",
+        "id": "full_width",
+        "label": "Wide display"
+      },
+      {
+        "type": "header",
+        "content": "Text settings"
+      },
+      {
+        "type": "text",
+        "id": "text",
+        "label": "Content",
+        "default": "Sign up for our Newsletter"
+      },
+      {
+        "type": "color",
+        "id": "text_color",
+        "label": "Text color",
+        "default": "#535250"
+      },
+      {
+        "type": "range",
+        "id": "text_fs",
+        "label": "Text font size",
+        "min": 10,
+        "max": 60,
+        "step": 1,
+        "unit": "px",
+        "default": 23
+      },
+      {
+        "type": "header",
+        "content": "Input settings"
+      },
+      {
+        "type": "color",
+        "id": "input_color",
+        "label": "Text color",
+        "default": "#999"
+      },
+      {
+        "type": "range",
+        "id": "input_fs",
+        "label": "Font size",
+        "min": 10,
+        "max": 60,
+        "step": 1,
+        "unit": "px",
+        "default": 16
+      },
+      {
+        "type": "color",
+        "id": "input_border_color",
+        "label": "Border color",
+        "default": "#d7d7d7"
+      },
+      {
+        "type": "header",
+        "content": "Icon settings"
+      },
+      {
+        "type": "color",
+        "id": "icon_color",
+        "label": "Color",
+        "default": "#999"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Newsletter",
+        "category": "Marketing"
+      }
+    ]
+  }
+{% endschema %}

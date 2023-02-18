@@ -1,0 +1,14 @@
+{%- unless blog.articles_count == 0 -%}
+<div class="sidebar__item grid__item">
+	<div class="sidebar__title gutter-bottom">{{ "blogs.sidebar.recent_posts" | t }}</div>
+	<div class="sidebar__content dib w100">
+		<ul class="no-gutter">
+			{% for article in blog.articles limit: limit %}
+				<li{% unless forloop.first %} class="gutter-ele-top"{% endunless %}>
+	        <a href="{{ article.url }}" title="{{ article.title | escape }}" class="alternative">{{ article.title }}</a>
+	      </li>
+			{% endfor %}
+		</ul>
+	</div>
+</div>
+{%- endunless -%}

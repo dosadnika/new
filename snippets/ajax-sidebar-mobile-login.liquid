@@ -1,0 +1,17 @@
+{%- if shop.customer_accounts_enabled -%}
+	<div class="login-form-mobile">
+		{%- unless customer -%}
+  		<h4>{{ 'customer.login.title' | t }}/{{ 'customer.register.title' | t }}</h4>
+      {%- render 'login-form-header', id: 'customer_login_header_mobile', suffix_id_field: 'HeaderMobile', left_holder: left_holder, right_holder: right_holder -%}
+    {%- else -%}
+    	<a href="{{ routes.account_url }}" title="{{ 'customer.account.title' | t | escape }}">
+				{% render 'icon-account' with add_class: 'ver-sub' %}
+				{{ 'customer.account.title' | t }}
+			</a>
+			<a href="{{ routes.account_logout_url }}" title="{{ 'layout.customer.log_out' | t | escape }}">
+				{% render 'icon-sign-out' with add_class: 'ver-sub' %}
+				{{ 'layout.customer.log_out' | t }}
+			</a>
+		{%- endunless -%}
+	</div>
+{%- endif -%}

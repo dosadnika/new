@@ -1,0 +1,14 @@
+{%- unless settings.enable_rtl and settings.rtl_language_codes contains request.locale.iso_code -%}  
+  {%- assign previous_text = 'general.pagination.previous' | t -%}
+  {%- assign previous_text = previous_text | prepend: '<span class="hidden-xs">' | append: '</span>' | prepend: '<i class="wicon-icons-30 button__prev-page"></i>' -%}
+  {%- assign next_text = 'general.pagination.next' | t -%}
+  {%- assign next_text = next_text | prepend: '<span class="hidden-xs">' | append: '</span>' | append: '<i class="wicon-icons-31 button__next-page"></i>' -%}
+{%- else -%}
+  {%- assign previous_text = 'general.pagination.previous' | t -%}
+  {%- assign previous_text = previous_text | prepend: '<span class="hidden-xs">' | append: '</span>' | append: '<i class="wicon-icons-31 button__prev-page"></i>' -%}
+  {%- assign next_text = 'general.pagination.next' | t -%}
+  {%- assign next_text = next_text | prepend: '<span class="hidden-xs">' | append: '</span>' | prepend: '<i class="wicon-icons-30 button__next-page"></i>' -%}
+{%- endunless -%}  
+<div class="big-gutter-top text-center pagination">
+{{ paginate | default_pagination: previous: previous_text, next: next_text | replace: '<a ','<a class="button button--style2 cf__link" ' | replace: 'current','button button--style1 button--current dib' | replace: 'class="deco"','class="button button--style2 button--dot"' }}
+</div>

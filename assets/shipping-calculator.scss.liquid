@@ -1,0 +1,62 @@
+/* Responsive screen */
+$mobile_width: 767px;
+$min_tablet_small_width: 768px;
+$max_tablet_small_width: 991px;
+$min_tablet_large_width: 992px;
+$max_tablet_large_width: 1199px;
+$desktop_width: 1200px;
+$color_general_blur: {{ settings.color_general | color_modify: 'alpha', 0.05 }};
+
+#shipping-calculator .field {
+  float: left;
+  margin: 0 0.6em 1em 0;
+  font-size: 15px;
+}
+#shipping-calculator .field .est-field {
+  padding: 0 10px;
+}
+@media (max-width: $max_tablet_small_width) {
+  #shipping-calculator .field {
+    width: 100%;
+  }
+  #shipping-calculator .field .est-field {
+    width: 100%!important;
+  }
+}  
+#shipping-calculator .field label {
+  display: block;
+  margin: 0 0 .3em;
+  font-size: 1em;
+}
+#shipping-calculator .field input[type=text] {
+  display: inline-block;
+  width: 150px;
+  max-width: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 1.4em .6em;
+  font-size: 1em;
+  border: 1px solid $color_general_blur;
+  outline: 0;
+  -webkit-appearance: none;
+}  
+#shipping-calculator .field:last-child:before { 
+  content: "\00A0"; display: block; margin: 0 0 .3em; font-size: 1em; 
+}
+#shipping-calculator #wrapper-response {
+  clear: both;
+}
+@media (max-width: 800px) {
+  #shipping-calculator .field {
+    float: none;
+  }
+  #shipping-calculator .field:last-child:before { 
+    content: none;
+  }
+}
+#shipping-rates-feedback {
+  text-align: left;
+}

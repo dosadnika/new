@@ -1,0 +1,34 @@
+<ul class="mobile-nav link-list" style="padding: 0;">
+	{%- assign link_list = settings.mobile_nav -%}
+	{%- for l in linklists[link_list].links -%}
+		<li class="link-list__item mobile-nav__item level0 {% if l.links != blank %} link-list__item--parent{% endif %}">
+			<a class="link-list__item__link{% if l.active %} active do-active{% endif %} text-uppercase" href="{{ l.url }}" title="{%- render 'nav-shortcode-ign', str: l.title -%}">{%- render 'nav-shortcode', color: settings.header_mobile_color_label, bkg: settings.header_mobile_bkg_label, str: l.title -%}</a>
+			{% if l.links != blank %}
+				<a href="#" class="mobile-nav__arrow flex flex-align-hoz flex-align-ver por transition wicon-plus dib" title="{{ 'layout.navigation.arrow' | t | escape }}"></a>
+			{% endif %}
+			{%- if l.links != blank -%}
+			<ul class="link-list__item__dropdown" style="display:none;">
+				{%- for childlink in l.links -%}
+				<li class="link-list__item mobile-nav__item level1 {% if childlink.links != blank %} link-list__item--parent{% endif %}">
+					<a class="link-list__item__link{% if childlink.active %} active do-active{% endif %}" href="{{ childlink.url }}" title="{%- render 'nav-shortcode-ign', str: childlink.title -%}">
+						{%- render 'nav-shortcode', color: settings.header_mobile_color_label, bkg: settings.header_mobile_bkg_label, str: childlink.title -%}
+					</a>
+					{% if childlink.links != blank %}
+						<a href="#" class="mobile-nav__arrow flex flex-align-hoz flex-align-ver por transition wicon-plus dib" title="{{ 'layout.navigation.arrow' | t | escape }}"></a>
+					{% endif %}
+					{% if childlink.links != blank %}
+					<ul class="link-list__item__dropdown" style="display:none;">
+						{%- for grandchildlink in childlink.links -%}
+							<li class="link-list__item mobile-nav__item level2">
+								<a class="link-list__item__link{% if grandchildlink.active %} active do-active{% endif %}" href="{{ grandchildlink.url }}" title="{{ grandchildlink.title | escape }}">{{ grandchildlink.title | escape }}</a>
+							</li>	
+						{%- endfor -%}
+					</ul>
+					{%- endif -%}
+				</li>
+				{%- endfor -%}
+			</ul>
+			{%- endif -%}
+		</li>
+	{%- endfor -%}
+</ul>

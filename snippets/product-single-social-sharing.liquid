@@ -1,0 +1,5 @@
+{%- if section.settings.show_share_buttons -%}
+<div class="gutter-ele-top gutter-ele-bottom gutter-ele-top-tbs gutter-ele-bottom-tbs">
+	{%- include 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product -%}
+</div>
+{%- endif -%}

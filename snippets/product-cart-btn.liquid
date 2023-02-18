@@ -1,0 +1,42 @@
+{% if show_cart_btn %}
+{%- if count -%}{%- assign count_button = count_button | plus: 1 -%}{% endif -%}
+<form method="post" enctype="multipart/form-data">
+  {%- if product.available -%}
+    {%- assign show_add_cart_btn = false -%}
+    {%- if product.has_only_default_variant -%}
+      {%- assign show_add_cart_btn = true -%}
+    {%- elsif show_options -%}
+      {%- assign color_label = 'products.product.color' | t -%}
+      {%- if product.options.size == 1 and product.options_by_name[color_label] != blank -%}
+        {%- assign show_add_cart_btn = true -%}
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- if show_add_cart_btn -%}
+      <select name="id" class="variant-id hide">
+        {%- for variant in product.variants -%}
+          <option {% if variant.id == product.first_available_variant.id %} selected="selected" {% endif %} value="{{ variant.id }}">
+            {{ variant.title }}
+          </option>
+        {%- endfor -%}
+      </select>
+      {%- unless settings.pre_order_enable and product.first_available_variant.inventory_policy == 'continue' and product.first_available_variant.inventory_quantity <= 0 -%}
+        {%- assign cart_text = 'products.product.add_to_cart' | t -%}
+      {%- else -%}
+        {%- assign cart_text = 'products.product.pre_order' | t -%}
+      {%- endunless -%}
+      <button class="button add-cart-btn center-block flex button--oneline {{ btn_style | default: 'button--style1' }} por" type="submit" name="add" title="{{ cart_text | escape }}" {% if showTooltip %}data-toggle="tooltip" data-original-title="{{ cart_text | escape }}" data-placement="{% if tooltip_pos != blank %}{{ tooltip_pos }}{% else %}top{% endif %}"{% endif %} aria-label="button">
+        <i></i><span>{{ cart_text }}</span>
+      </button>
+    {%- else -%}
+      <button class="button button--select-option center-block flex button--oneline {{ btn_style | default: 'button--style1' }} por" data-href="{{ product.url }}" title="{{ 'products.product.select_options' | t | escape }}" {% if showTooltip %} data-toggle="tooltip" data-original-title="{{ 'products.product.select_options' | t | escape }}" data-placement="{% if tooltip_pos != blank %}{{ tooltip_pos }}{% else %}top{% endif %}"{% endif %}>
+        <i></i><span>{{ 'products.product.select_options' | t }}</span>
+      </button>
+    {%- endif -%}
+  {%- else -%}
+    <button class="button add-cart-btn hide center-block flex button--oneline {{ btn_style | default: 'button--style1' }} por" type="button" name="add" title="{{ 'products.product.add_to_cart' | t | escape }}" {% if showTooltip %} data-toggle="tooltip" data-original-title="{{ 'products.product.add_to_cart' | t | escape }}" data-placement="{% if tooltip_pos != blank %}{{ tooltip_pos }}{% else %}top{% endif %}"{% endif %} aria-label="button">
+      <i></i><span>{{ 'products.product.add_to_cart' | t }}</span>
+    </button>
+  {%- endif -%}
+</form>
+{% endif %}

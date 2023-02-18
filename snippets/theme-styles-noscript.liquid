@@ -1,0 +1,22 @@
+<noscript>
+  <link href="{{ settings.font_url }}" rel="stylesheet" media="all">
+  {%- if template.name == 'collection' or template.name == 'search' -%}
+    <link rel="stylesheet" href="{{ 'styles-collection-page.scss.css' | asset_url }}" media="all">
+  {%- endif -%}
+
+  <link rel="stylesheet" href="{{ 'bootstrap.min.scss.css' | asset_url }}" media="all">
+  <link rel="stylesheet" href="{{ 'bt-icons.scss.css' | asset_url }}" media="all">
+  <link rel="stylesheet" href="{{ 'styles.scss.css' | asset_url }}" media="all">
+  {%- if template.name == 'product' -%}
+    <link rel="stylesheet" href="{{ 'cloudzoom.scss.css' | asset_url }}" media="all">
+    <link rel="stylesheet" href="{{ 'quick-view.scss.css' | asset_url }}" media="all">
+    <link rel="stylesheet" href="{{ 'product-single.scss.css' | asset_url }}" media="all">
+  {%- endif -%}
+  {%- if enable_rtl -%}
+    <link rel="stylesheet" href="{{ 'bootstrap-rtl.min.scss.css' | asset_url }}" media="all">
+    <link rel="stylesheet" href="{{ 'styles-rtl.scss.css' | asset_url }}" media="all">
+  {%- endif -%}
+  {%- if settings.load_custom_css -%}
+    <link rel="stylesheet" href="{{ 'custom-css.scss.css' | asset_url }}" media="all">
+  {%- endif -%}
+</noscript>

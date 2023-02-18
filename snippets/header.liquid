@@ -1,0 +1,50 @@
+<div class="header-sticker w100{% if settings.header_style == 'style1' and template.name == 'index' %} header-sticker--abs-tb{% endif %}">
+	{%- if settings.header_style == 'style1' -%}
+		{%- assign style_header1 =  '' -%}
+		{%- if template.name == 'index' -%}
+			{%- assign style_header1 = 'position:absolute;' -%}
+		{%- endif -%}	
+		{%- if settings.bkg_header1 != blank -%}
+			{%- if template.name == 'index' -%}
+				{%- assign bg1_rgba_alpha = settings.bkg_header1_opacity | divided_by: 100.00 -%}
+			{%- else -%}
+				{%- assign bg1_rgba_alpha = 1 -%}
+			{%- endif -%}
+			{%- assign bg1_rgba_color = settings.bkg_header1 | color_modify: 'alpha', bg1_rgba_alpha -%}	
+			{%- assign style_header1 = style_header1 | append: 'background-color:' | append: bg1_rgba_color | append: ';' -%}
+		{%- endif -%}
+	{%- endif -%}
+	<header class="header header--desktop header--{{ settings.header_style }}{% if settings.header_style != 'style6' %} gutter-bottom{% endif %} site-header hidden-xs hidden-sm{% if settings.use_sticky %} use-sticky{% endif %} por{% if settings.header_style == 'style6' and settings.bkg_image_header6 != blank %} lazyload op1{% endif %}"{% if settings.header_style == 'style1' and style_header1 != '' %} style="{{ style_header1 }}"{% endif %}{% if settings.header_style == 'style6' and settings.bkg_image_header6 != blank %} data-bgset="{% render 'bgset' with settings.bkg_image_header6 as image %}" data-sizes="auto" data-parent-fit="cover" style="background-repeat:no-repeat;background-position:center center;background-size:cover;"{% endif %}>
+	  {%- case settings.header_style -%}
+		  {%- when 'style1' -%}
+		    {%- render 'header-style1' with enable_rtl: enable_rtl, left_holder: left_holder, right_holder: right_holder -%}
+		  {%- when 'style2' -%}
+		    {%- render 'header-style2' with enable_rtl: enable_rtl, left_holder: left_holder, right_holder: right_holder -%}
+		  {%- when 'style3' -%}
+		    {%- render 'header-style3' with enable_rtl: enable_rtl, left_holder: left_holder, right_holder: right_holder -%}
+		  {%- when 'style4' -%}
+		    {%- render 'header-style4' with enable_rtl: enable_rtl, left_holder: left_holder, right_holder: right_holder -%}
+		  {%- when 'style5' -%}
+		    {%- render 'header-style5' with enable_rtl: enable_rtl, left_holder: left_holder, right_holder: right_holder -%}
+		  {%- else -%}
+		    {%- render 'header-style6' with enable_rtl: enable_rtl, left_holder: left_holder, right_holder: right_holder -%}
+		{%- endcase -%}
+	</header>
+	<div class="header header--mobile visible-xs visible-sm por{% if settings.use_sticky %} use-sticky use-sticky--mobile use-sticky--transition{% endif %}">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-12" style="background:{{ settings.bkg_header_mobile | default: '#fff' }};">
+					<div class="header-mobile__top flex flex-align-ver flex-align-space-between" style="padding: 10px 0;">
+						<div class="col-xs-7 flex flex-align-ver no-gutter--{% unless enable_rtl %}left{% else %}right{% endunless %}">
+							<a class="mobile-nav-bar bt-sidebar-btn" href="#" title="menu-bar" data-target="#sidebar-mobile-nav" data-placement="{% unless enable_rtl %}left{% else %}right{% endunless %}" style="{% unless enable_rtl %}padding-right:10px;{% else %}padding-left:10px;{% endunless %}">{% render 'icon-bar' with add_class: 'ver-sub' %}</a>
+							{%- render 'header-mobile-logo' -%}
+						</div>
+						<div class="col-xs-5 no-gutter--{% unless enable_rtl %}right{% else %}left{% endunless %}" style="position: static;">
+							{%- render 'header__links--mobile' with enable_rtl: enable_rtl, left_holder: left_holder, right_holder: right_holder -%}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

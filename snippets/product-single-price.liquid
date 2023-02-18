@@ -1,0 +1,41 @@
+<div class="product-price-wrap flex flex-align-ver gutter-ele-top gutter-ele-top-tbs gutter-ele-bottom gutter-ele-bottom-tbs">
+  <div class="product-price--single lh1 flex flex-align-ver{% unless product.price_varies %} product-price{% endunless %}">
+    {%- if product.price_varies -%}
+      <span class="product-price__price dib">
+        {%- render 'price' with product.price_min -%}
+      </span>
+      <span class="product-price__varying">-</span>
+      <span class="product-price__price dib">
+        {%- render 'price' with product.price_max -%}
+      </span>
+    {%- else -%}
+      {% if current_variant.compare_at_price > current_variant.price %}
+        <s class="product-price__price">{%- render 'price' with current_variant.compare_at_price -%}</s>
+        <span class="product-price__price product-price__sale">
+          {%- render 'price' with current_variant.price -%}
+        </span>
+      {% else %}
+        <span class="product-price__price">{%- render 'price' with current_variant.price -%}</span>
+      {% endif %}
+    {%- endif -%}
+    {%- render 'product-price-unit' with variant: current_variant, is_single: true -%}
+  </div>
+  {%- unless product.price_varies -%}
+    {%- render 'product-single-discount-text' with variant: current_variant -%}
+  {%- endunless -%}  
+</div>
+
+{%- assign show_shipping_policy = false -%}
+{%- if section.settings.show_shipping_policy_link and shop.shipping_policy.body != blank -%}
+  {%- assign show_shipping_policy = true -%}
+{%- endif -%}
+{%- if shop.taxes_included or show_shipping_policy -%}
+  <div class="product__policies rte gutter-ele-top gutter-ele-top-tbs">
+    {%- if shop.taxes_included -%}
+      {{ 'products.product.include_taxes' | t }}
+    {%- endif -%}
+    {%- if show_shipping_policy -%}
+      {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
+    {%- endif -%}
+  </div>
+{%- endif -%}

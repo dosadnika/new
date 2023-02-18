@@ -1,0 +1,6 @@
+<li class="w100 cf__item__link{% if is_current %} active{% endif %}">
+  <a href="#" data-value="{{ value | escape }}" class="cf__link cf__link--auto cf__link--option cf__link--box{% if is_current %} current{% endif %}{% if section.settings.checkboxes_format == 'circle' %} cf__link--circle{% endif %}">
+  	<span class="cf__link--title">{{ value }}</span>
+  	<span class="cf__link--count">{{ count }}</span>
+  </a>
+</li>

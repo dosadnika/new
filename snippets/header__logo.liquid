@@ -1,0 +1,11 @@
+<div class="header__logo">
+	{%- if settings.show_logo and settings.logo != blank -%}
+	{%- assign logo_size_index = 'header_' | append: settings.header_style | append: '_logo_size' -%}
+	{%- assign logo_size = settings[logo_size_index] -%}
+	<a href="{{ routes.root_url }}" class="header__logo__image dib" title="{{ shop.name | escape }}">        
+		<img data-src="{{ settings.logo | img_url: logo_size }}" alt="{{ settings.logo.alt | default: shop.name | escape }}" class="img-responsive lazyload" width="{{ settings.logo.width }}" height="{{ settings.logo.height }}" style="width:auto;"{% render 'img-one-pixel' %}>
+	</a>
+	{%- else -%}
+	<a class="header__logo__link" href="{{ routes.root_url }}" title="{{ shop.name | escape }}">{{ shop.name }}</a>
+	{%- endif -%}
+</div>

@@ -1,0 +1,30 @@
+<div class="modal fade selectOptionPopup" tabindex="-1" role="dialog" id="selectOptionPopup">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-label="Close" class="close">{% include 'icon-close' with add_class: 'flex flex-align-hoz' %}</button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="alert alert-warning">{{ 'products.product.select_option_message' | t }}</div>
+          </div>
+        </div>
+        <div class="row product-section-content"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+.selectOptionPopup .swatch__item--single.swatch__item--color {
+  width: 40px;
+}
+.selectOptionPopup .swatch__item--single {
+  min-width: 40px;
+  height: 40px;
+  line-height: 40px;
+}
+.selectOptionPopup span.product-price__price {
+  font-size: 27px;
+}
+</style>

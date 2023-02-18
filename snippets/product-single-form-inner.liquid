@@ -1,0 +1,55 @@
+<div class="product-form__item product-form__item--quantity{% if align_center_button %} center-block text-center{% endif %} gutter-ele-top gutter-ele-bottom gutter-ele-top-tbs gutter-ele-bottom-tbs flex">
+  {%- include 'product-single-customizable-fields' -%}
+  {%- if section.settings.show_quantity_selector -%}
+  <div class="qty-box qty-box--single qty-box--single-{{ layout_name | remove_first: 'product-single-' }} dib">
+    <button type="button" class="qty-box__ctrl qty-box__ctrl--descrease flex flex-align-hoz" aria-label="button">
+      {%- include 'icon-arrow-down' -%}
+    </button>
+    <input type="number" name="quantity" value="1" min="1" class="qty-box__input w100{% if template.suffix != 'quick_view' %} qty-box__input--sync{% endif %} text-center h100 qty-box__input--single" aria-label="form" style="font-size:20px;">
+    <button type="button" class="qty-box__ctrl qty-box__ctrl--increase flex flex-align-hoz" aria-label="button">
+      {%- include 'icon-arrow-up' -%}
+    </button>
+  </div>
+  {%- endif -%}
+  {%- if current_variant.available -%}
+    {%- unless settings.pre_order_enable and product.first_available_variant.inventory_policy == 'continue' and product.first_available_variant.inventory_quantity <= 0 -%}
+      {%- assign cart_text = 'products.product.add_to_cart' | t -%}
+    {%- else -%}
+      {%- assign cart_text = 'products.product.pre_order' | t -%}
+    {%- endunless -%}
+  {%- else -%}
+    {%- assign cart_text = 'products.product.sold_out' | t -%}  
+  {%- endif -%}  
+  <button class="button button--rad button--one-line add-cart-btn button--single-cart button--style1 add-cart-btn--state por{% if template.suffix != 'quick_view' %} button--single-cart-main{% endif %}" type="submit" name="add" title="{{ cart_text | escape }}" aria-label="button" style="height:45px;flex-grow:1;"{% unless current_variant.available %} disabled="disabled"{% endunless %}>
+    <i></i>
+    <span>{{ cart_text }}</span>
+  </button>
+</div>
+{%- if template.suffix != 'quick_view' -%}
+  {% if section.settings.enable_payment_button %}
+  <div class="shopify-payment-btn-wrap w100">
+    {{ form | payment_button }}
+  </div>
+  {% endif %}
+{%- endif -%}
+{%- if template.suffix != 'quick_view' -%}
+  {%- assign cart_terms_for_id = 'single-page-' | append: section.id -%}
+  {%- include 'cart-terms' with for_id: cart_terms_for_id -%}
+  <div class="gutter-ele-bottom gutter-ele-bottom-tbs"></div>
+{%- endif -%}
+<div class="gutter-ele-top">
+  {%- if section.settings.show_compare_btn and settings.enable_compare -%}
+  <a title="{{ 'collections.product_item.add_to_compare'|t|escape }}" data-id="{{ product.id }}" href="#" class="button--cp flex flex-align-ver w100" data-product-title="{{ product.title | escape }}">{% render 'icon-compare' %}&nbsp;{{ 'collections.product_item.add_to_compare'|t }}</a>
+  {%- endif -%}
+  {%- if section.settings.show_wishlist_btn and settings.enable_wishlist -%}
+  <a title="{{ 'collections.product_item.add_to_wishlist'|t|escape }}" data-id="{{ product.id }}" href="#" class="button--wl button--wl-text flex flex-align-ver w100 distance-top-ele" data-product-title="{{ product.title | escape }}">{% render 'icon-wishlist' %}&nbsp;<span class="wishlist-text">{{ 'collections.product_item.add_to_wishlist'|t }}</span></a>
+  {%- endif -%}
+</div>
+
+<select name="id" class="hide variant-id">
+  {%- for variant in product.variants -%}
+    <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">
+      {{ variant.title }}
+    </option>
+  {%- endfor -%}
+</select>

@@ -1,0 +1,13 @@
+{%- if section.settings.title != blank -%}
+<div class="section__heading{% if section.settings.sub_title != blank %} section__heading--with-sub{% endif %}{% if section_heading_custom_class %} {{ section_heading_custom_class }}{% endif %}">
+  <div class="section__title{% if heading_align %} text-{{ heading_align }}{% endif %} flex flex-align-ver">
+    <h2 class="section__title__text dib">{{ section.settings.title | replace: '<hl>','<span class="section__title__highline">' | replace: '</hl>','</span>' | raw }}</h2>
+    {%- if section.settings.sub_title != blank -%}
+      <h3 class="section__sub-title w100 text-center">
+        <span>{{ section.settings.sub_title | raw }}</span>
+      </h3>
+    {%- endif -%}
+    <span class="section__title__line dib"></span>
+  </div>
+</div>
+{%- endif -%}

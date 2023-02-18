@@ -1,0 +1,3 @@
+<div class="cart-fixed">
+	<a href="#" class="w100 db text-center bt-sidebar-btn por cart-sidebar-trigger" data-target="#bt-sidebar-cart" data-placement="{% unless enable_rtl %}right{% else %}left{% endunless %}" style="height:45px;line-height:45px;border-bottom:1px solid {{ settings.color_general_hover }};">{%- render 'icon-cart' -%}<span class="cart-number cart-number--fixed" style="font-size: 10px;top:5px;{% unless enable_rtl %}right{% else %}left{% endunless %}:4px;width:15px;height:15px;line-height:13px;position:absolute;border-radius:50%;background:{{ settings.body_bkg_color }};">{{ cart.item_count }}</span></a>
+</div>

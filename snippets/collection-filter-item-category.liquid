@@ -1,0 +1,80 @@
+<div class="cf__item flex flex-align-space-between flex-align-ver w100{% if is_first and force_no_first == false %} cf__item--first{% endif %}">
+  <h5 class="cf__item__title{% if is_first and force_no_first == false %} cf__item__title--first{% endif %} fw-bold secondary-font" href="#" title="{{ block.settings.title | escape }}">
+    {{ block.settings.title }}
+  </h5>
+  <a href="#" class="fw-bold expand-trigger{% if block.settings.default_expand == 'expand' %} open{% endif %}">
+    {%- render 'icon-collapse' with add_classes: 'cf__item__collapse' -%}
+  </a>
+  <div class="w100 cf__item__categories cfc expand-content"{% if block.settings.default_expand != 'expand' %} style="display:none;"{% endif %}>
+  	{%- if request.locale.root_url == '/' -%}
+  		{%- assign tag_url = canonical_url | remove_first: shop.url | remove_first: '/collections/' | remove_first: collection.handle -%}
+  	{%- else -%}
+  		{%- assign lower_locale_root_url = request.locale.root_url | downcase -%}
+  		{%- assign tag_url = canonical_url | remove_first: shop.url | remove_first: lower_locale_root_url | remove_first: '/collections/' | remove_first: collection.handle | split: '?' | first -%}
+  	{%- endif -%}
+  	{%- if collection.sort_by != blank and collection.sort_by != collection.default_sort_by -%}
+  		{%- assign filter_sortby_param = '?sort_by=' | append: collection.sort_by -%}
+  	{%- else -%}
+  		{%- assign filter_sortby_param = '' -%}
+  	{%- endif -%}
+  	{%- if block.settings.data_source == 'collection_tree' -%}
+  		{%- assign parent_node_handles = '' -%}
+  		{%- assign parent_depth = 0 -%}
+  		{%- if collection.handle == 'all' -%}
+		  	{%- assign renderNodes = shop.metafields.btt.collection_json_hierarchy -%}
+		  {%- else -%}
+		  	{%- include 'collection-filter-find-tree' with nodes: shop.metafields.btt.collection_json_hierarchy, loop_depth: 1 -%}
+		  	{%- if treeRoot != blank -%}
+		  		{%- assign renderNodes = treeRoot.children -%}
+		  		{%- assign parentPath = treeRoot.path -%}
+		  	{%- endif -%}
+		  	<ul style="padding:10px 0 0 15px;">
+	  			<li class="gutter-ele-small-bottom">
+					<a class="cfc__link cf__link" href="{{ routes.all_products_collection_url }}{{ tag_url }}{{ filter_sortby_param | raw }}" title="{{ 'collections.general.all_collections' | t | escape }}">{%- unless enable_rtl -%}{%- render 'icon-chevron-left' with add_classes: 'cf__back-icon' -%}{%- endunless -%}{{ 'collections.general.all_collections' | t }}{%- if enable_rtl -%}{%- render 'icon-chevron-right' with add_classes: 'cf__back-icon' -%}{%- endif -%}</a>
+					</li>
+					{%- if parentPath != blank -%}
+				  	{%- assign parent_node_handles_array = parentPath | split: '/' -%}
+				  	{%- for p_handle in parent_node_handles_array -%}
+							{%- include 'collection-filter-parent-node' with collection_parent_node: collections[p_handle], filter_sortby_param: filter_sortby_param -%}
+				  	{%- endfor -%}
+			  	{%- endif -%}
+			  </ul>
+			  <strong class="db gutter-ele-small-bottom" style="padding-{% unless enable_rtl %}left{% else %}right{% endunless %}:20px;">{{ collection.title }}</strong>
+		  {%- endif -%}
+		  {%- include 'collection-filter-render-tree' with treeNodes: renderNodes, filter_sortby_param: filter_sortby_param -%}
+  	{%- else -%}
+    {%- if linklists[block.settings.category].links.size > 0 -%}
+		  <ul class="link-list mobile-nav" style="padding-{% unless enable_rtl %}left{% else %}right{% endunless %}: 0;">
+				{%- for l in linklists[block.settings.category].links -%}
+					<li class="link-list__item mobile-nav__item level0{% if l.active %} open{% endif %}">
+						<a class="dib cfc__link link-list__item__link{% if l.active %} active do-active{% endif %}" href="{{ l.url }}" title="{%- render 'nav-shortcode-ign', str: l.title -%}">{%- render 'nav-shortcode', color: settings.header_mobile_color_label, bkg: settings.header_mobile_bkg_label, str: l.title -%}{% if l.type == 'collection_link' %} ({{ l.object.all_products_count }}){% endif %}</a>
+						{%- if l.links != blank -%}
+						<a href="#" class="mobile-nav__arrow flex flex-align-hoz flex-align-ver por transition cfc__arrow dib wicon-plus" title="{{ 'layout.navigation.arrow' | t | escape }}"></a>
+						<ul class="link-list__item__dropdown cfc__dropdown" style="{% if l.active %}display:block;{% else %}display:none;{% endif %}">
+							{%- for childlink in l.links -%}
+							<li class="link-list__item level1 mobile-nav__item{% if childlink.active %} open{% endif %}">
+								<a class="dib cfc__link link-list__item__link{% if childlink.active %} active do-active{% endif %}" href="{{ childlink.url }}" title="{{ childlink.title | escape }}">{{ childlink.title | escape }}{%- if childlink.type == 'collection_link' -%} ({{ childlink.object.all_products_count }}){%- endif -%}</a>
+								{% if childlink.links != blank %}
+								<a href="#" class="mobile-nav__arrow flex flex-align-hoz flex-align-ver por transition cfc__arrow dib wicon-plus" title="{{ 'layout.navigation.arrow' | t | escape }}"></a>
+								<ul class="link-list__item__dropdown cfc__dropdown" style="{% if childlink.active %}display:block;{% else %}display:none;{% endif %}">
+									{%- for grandchildlink in childlink.links -%}
+										<li class="link-list__item level2 mobile-nav__item">
+											<a class="dib cfc__link link-list__item__link{% if grandchildlink.active %} active do-active{% endif %}" href="{{ grandchildlink.url }}" title="{{ grandchildlink.title | escape }}">{{ grandchildlink.title | escape }}{%- if grandchildlink.type == 'collection_link' -%} ({{ grandchildlink.object.all_products_count }}){%- endif -%}</a>
+										</li>	
+									{%- endfor -%}
+								</ul>
+								{%- endif -%}
+							</li>
+							{%- endfor -%}
+						</ul>
+						{%- endif -%}
+					</li>
+				{%- endfor -%}
+				</ul>
+		{%- endif -%}
+		{%- endif-%}
+  </div>
+</div>
+{%- if block.settings.show_spr_line -%}
+	<hr>
+{%- endif -%}

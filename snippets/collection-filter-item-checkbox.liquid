@@ -1,0 +1,5 @@
+{%- if active_tag != '' -%}
+<li class="w100 active cf__item__link">{{ '' | append: t | link_to_remove_tag: active_tag | replace: 'title=', title_replace }}</li>
+{%- else -%}
+<li class="w100 cf__item__link">{{ '' | append: tag | link_to_add_tag: t | replace: 'title=', title_replace }}</li>
+{%- endif -%}

@@ -1,0 +1,35 @@
+<link href="{{ settings.font_url }}" rel="preload" class="preload-css" as="style" onload="this.rel='stylesheet';">
+<noscript><link rel="stylesheet" href="{{ settings.font_url }}"></noscript>
+{%- if template.name == 'collection' or template.name == 'search' -%}
+  <link rel="preload" class="preload-css" as="style" onload="this.rel='stylesheet';" href="{{ 'styles-collection-page.scss.css' | asset_url }}">
+  <noscript><link rel="stylesheet" href="{{ 'styles-collection-page.scss.css' | asset_url }}"></noscript>
+{%- endif -%}
+
+<link rel="preload" class="preload-css" as="style" onload="this.rel='stylesheet';" href="{{ 'bootstrap.min.scss.css' | asset_url }}">
+<noscript><link rel="stylesheet" href="{{ 'bootstrap.min.scss.css' | asset_url }}"></noscript>
+<link rel="preload" class="preload-css" as="style" onload="this.rel='stylesheet';" href="{{ 'bt-icons.scss.css' | asset_url }}">
+<noscript><link rel="stylesheet" href="{{ 'bt-icons.scss.css' | asset_url }}"></noscript>
+<link rel="preload" class="preload-css" as="style" onload="this.rel='stylesheet';" href="{{ 'styles.scss.css' | asset_url }}">
+<noscript><link rel="stylesheet" href="{{ 'styles.scss.css' | asset_url }}"></noscript>
+{%- if template.name == 'product' -%}
+  <link rel="preload" class="preload-css" as="style" onload="this.rel='stylesheet';" href="{{ 'cloudzoom.scss.css' | asset_url }}">
+  <noscript><link rel="stylesheet" href="{{ 'cloudzoom.scss.css' | asset_url }}"></noscript>
+  <link rel="preload" class="preload-css" as="style" onload="this.rel='stylesheet';" href="{{ 'quick-view.scss.css' | asset_url }}">
+  <noscript><link rel="stylesheet" href="{{ 'quick-view.scss.css' | asset_url }}"></noscript>
+  <link rel="preload" class="preload-css" as="style" onload="this.rel='stylesheet';" href="{{ 'product-single.scss.css' | asset_url }}">
+  <noscript><link rel="stylesheet" href="{{ 'product-single.scss.css' | asset_url }}"></noscript>
+{%- endif -%}
+{%- if template.name != 'index' and template.name != 'collection' and template.name != 'product' and template.name != 'cart' -%}
+	<link class="preload-css" rel="preload" href="{{ 'styles-remain-pages.scss.css' | asset_url }}" as="style" onload="this.rel='stylesheet';">
+	<noscript><link rel="stylesheet" href="{{ 'styles-remain-pages.scss.css' | asset_url }}"></noscript>
+{%- endif -%}
+{%- if enable_rtl -%}
+  <link rel="preload" class="preload-css" as="style" onload="this.rel='stylesheet';" href="{{ 'bootstrap-rtl.min.scss.css' | asset_url }}">
+  <noscript><link rel="stylesheet" href="{{ 'bootstrap-rtl.min.scss.css' | asset_url }}"></noscript>
+  <link rel="preload" class="preload-css" as="style" onload="this.rel='stylesheet';" href="{{ 'styles-rtl.scss.css' | asset_url }}">
+  <noscript><link rel="stylesheet" href="{{ 'styles-rtl.scss.css' | asset_url }}"></noscript>
+{%- endif -%}
+{%- if settings.load_custom_css -%}
+  <link rel="preload" class="preload-css" as="style" onload="this.rel='stylesheet';" href="{{ 'custom-css.scss.css' | asset_url }}">
+  <noscript><link rel="stylesheet" href="{{ 'custom-css.scss.css' | asset_url }}"></noscript>
+{%- endif -%}

@@ -1,0 +1,13 @@
+{%- layout none -%}
+{%- liquid
+	unless settings.enable_rtl and settings.rtl_language_codes contains request.locale.iso_code
+    assign left_holder = 'left'
+    assign right_holder = 'right'
+    assign enable_rtl = false
+  else
+    assign left_holder = 'right'
+    assign right_holder = 'left'
+    assign enable_rtl = true
+  endunless  
+-%}
+<div>{%- include 'recommended-products' with left_holder: left_holder, right_holder: right_holder, enable_rtl: enable_rtl -%}</div>

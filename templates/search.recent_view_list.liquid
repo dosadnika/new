@@ -1,0 +1,15 @@
+{%- layout none -%}
+<div>
+{%- for product in search.results -%}
+  <div id="recent-item-{{ product.id }}">
+  	{%- render 'product-columns-item' with
+      product: product,
+      main_thumbnail: 'product_image',
+      truncate_count: 5,
+      show_review_stars: true,
+      slide_per_row: 100,
+      index: index
+    -%}
+  </div>
+{%- endfor -%}
+</div>

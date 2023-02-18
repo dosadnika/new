@@ -1,0 +1,65 @@
+{%- liquid 
+	  unless enable_rtl
+	    assign direction = 'left'
+	  else
+	    assign direction = 'right'
+	  endunless  
+	-%}
+<div class="bt-sidebar hide">
+  <div id="sidebar-mobile-nav" class="bt-sidebar__inner no-gutter">
+  	<div class="bt-sidebar__header flex bt-sidebar__header--{{ direction }}" style="padding:0 10px;">
+  		{%- render 'sidebar-close-btn', direction: direction -%}
+  	</div>
+    <div class="bt-sidebar__content">
+    	<div class="block-mobile-nav">
+				{%- render 'ajax-sidebar-mobile-nav' -%}
+			</div>
+			{%- if settings.header_style == 'style6' and settings.header_style6_support_enable -%}
+			<div class="support-area-mobile block-mobile-nav">
+				{%- render 'ajax-sidebar-mobile-support' -%}
+			</div>
+			{%- endif -%}
+			{%- if settings.show_multiple_currencies -%}
+			<div class="block-mobile-nav">
+				<div class="link-list__item__link currency-switcher-mobile">
+					{%- render 'currency-switcher-inline' -%}
+				</div>
+			</div>
+			{%- endif -%}
+			{%- if shop.customer_accounts_enabled -%}
+				<div class="block-mobile-nav">
+					{%- render 'ajax-sidebar-mobile-login' -%}
+				</div>
+			{%- endif -%}
+			{%- if settings.enable_compare or settings.enable_wishlist -%}
+			<div class="block-mobile-nav">
+				<ul class="mobile-nav link-list" style="padding-{{ left_holder }}:15px;">
+					{%- if settings.enable_compare -%}
+					<li class="link-list__item mobile-nav__item">
+						<a href="javascript:void(0);" class="action-link-mobile header__link--compare" title="{{ 'collections.product_item.compare' | t | escape }}">
+							{%- render 'icon-compare' with -%}
+							<span style="margin-{{ left_holder }}:5px;">{{ 'general.accessibility.your_compare' | t }}</span>
+						</a>
+					</li>
+					{%- endif -%}
+					{%- if settings.enable_wishlist -%}
+					<li class="link-list__item mobile-nav__item">
+						<a href="javascript:void(0);" class="action-link-mobile header__link--wishlist" title="{{ 'collections.product_item.wishlist' | t | escape }}">
+							{%- render 'icon-wishlist' with -%}
+							<span style="margin-{{ left_holder }}:5px;">{{ 'general.accessibility.your_wishlist' | t }}</span>
+							(<span class="wishlist-number"></span>)
+						</a>
+					</li>	
+					{%- endif -%}
+				</ul>
+			</div>
+			{%- endif -%}
+
+			{%- if settings.enable_language_picker and shop.published_locales.size > 1 -%}
+			<div class="block-mobile-nav">
+				{%- render 'ajax-sidebar-mobile-languages' with enable_rtl: enable_rtl -%}
+			</div>
+			{%- endif -%}
+    </div>
+  </div>
+</div>

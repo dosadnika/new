@@ -1,0 +1,86 @@
+$fw_bold: 700;
+$fm_second: 'Playfair Display', sans-serif;/*font family general*/
+/* Responsive screen */
+$mobile_width: 767px;
+$min_tablet_small_width: 768px;
+$max_tablet_small_width: 991px;
+$min_tablet_large_width: 992px;
+$max_tablet_large_width: 1199px;
+$desktop_width: 1200px;
+.newsletterPopup {
+  text-align: center;
+  .modal-dialog {
+    @media(min-width: 768px) {
+      width: 750px;
+    }
+    .modal-body {
+      @media(min-width: $min_tablet_small_width) {
+        padding: 0;
+      }
+    }
+  }
+}
+@media(min-width: $min_tablet_small_width) {
+  .news-popup__info {
+    padding: 0 40px 0 60px;
+  }
+  .news-popup__info--no-image {
+    padding-top: 20px;
+  }
+}
+.news-popup__image {
+  img {
+    width: 100%;
+  }
+}
+.news-popup__text {
+  font-size: 17px;
+  text-transform: uppercase;
+  font-weight: $fw_bold;
+  line-height: 1.2em;
+  font-family: $fm_second;
+  @media(min-width: $min_tablet_small_width) {
+    font-size: 24px;
+  }
+}
+.news-popup__form-wrap {
+  margin-top: 45px;
+  margin-bottom: 45px;
+  position: relative;
+}
+.newsletter__submit--popup {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 50px!important;
+  width: 50px!important;
+  font-size: 20px;
+}
+#newsPopupEmail {
+  height: 50px;
+  line-height: 50px;
+  width: 100%;
+  text-align: center;
+}
+#newsPopupHide {
+  position: relative;
+  &:before {
+    content: '';
+    position: absolute;
+    top: -18px;
+    right: -18px;
+    bottom: -18px;
+    left: -18px;
+  }
+}
+.news-popup__checkbox {
+  position: absolute;
+  bottom: -10px;
+  left: 15px;
+  right: 15px;
+  @media(min-width: $min_tablet_small_width) {
+    bottom: 0;
+    padding: 10px;
+    background: {{ settings.body_bkg_color | color_modify: 'alpha', 0.8 }};
+  }
+}

@@ -1,0 +1,19 @@
+{%- if section.settings.enable_countdown -%}
+  {%- assign countdown = false -%}
+  {%- if product.metafields.btt.countdown -%}
+  {%- assign countdown = product.metafields.btt.countdown -%}
+  {%- elsif settings.enable_countdown_all and settings.countdown_expression -%}
+  {%- assign countdown = settings.countdown_expression -%}
+  {%- endif -%}
+  {%- if countdown -%}
+  <div class="gutter-ele-top gutter-ele-bottom gutter-ele-top-tbs gutter-ele-bottom-tbs{% if align_countdown_center %} text-center{% endif %} pg__countdown-wrap">
+    <div{% if settings.product_page_countdown_bkg_enable and settings.product_page_countdown_bkg != blank %} style="padding:20px;background-color:{{ settings.product_page_countdown_bkg }};"{% endif %}>
+      {%- if section.settings.countdown_text != blank -%}
+        {%- render 'icon-schedule' with add_class: 'dib' -%}&nbsp;<span class="pg__countdown-text dib" style="padding-bottom: 7px;">{{ section.settings.countdown_text }}</span>
+      {%- endif -%}
+      
+      <div class="pg__countdown pg__countdown-js transition secondary-font" data-product-id="{{ product.id }}" data-timer="{{ countdown }}"{% if product.metafields.btt.countdown_extend %} data-extend="{{ product.metafields.btt.countdown_extend }}"{% endif %} style="background:none;font-size:{{ settings.product_page_countdown_fs }}px;position:static;color:{{ settings.product_page_countdown_color }}"></div>
+    </div>
+  </div>
+  {%- endif -%}
+{%- endif -%}
